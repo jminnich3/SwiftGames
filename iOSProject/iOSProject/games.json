@@ -1,0 +1,24 @@
+[
+    {
+        "name" : "Crazy 8s"
+        "min_age" : "4"
+        "min_players" : "2"
+        "maxPlayers" : "5"
+        "similar_games": ""
+    },
+    {
+        "name" : "Go Fish"
+        "minAge" : "3"
+        "minPlayers" : "2"
+        "maxPlayers" : "6"
+        "similar_games" : "Authors"
+    },
+    {
+        "name" : "Black Jack"
+        "minAge" : "18"
+        "minPlayers" : "1"
+        "maxPlayers" : "8"
+        "similar_games" : "Poker"
+    }
+    
+]
