@@ -1,210 +1,227 @@
-{
+[
   {
     "suit": "hearts",
-    "value": 2
-  },
-  {
-    "suit": "hearts",
-    "value": 3
+    "value": "2"
   },
   {
     "suit": "hearts",
-    "value": 4
+    "value": "3"
   },
   {
     "suit": "hearts",
-    "value": 5
+    "value": "4"
   },
   {
     "suit": "hearts",
-    "value": 6
+    "value": "5"
   },
   {
     "suit": "hearts",
-    "value": 7
+    "value": "6"
   },
   {
     "suit": "hearts",
-    "value": 8
+    "value": "7"
   },
   {
     "suit": "hearts",
-    "value": 9
+    "value": "8"
   },
   {
     "suit": "hearts",
-    "value": 10
+    "value": "9"
   },
   {
     "suit": "hearts",
-    "value": 11
+    "value": "10"
   },
   {
     "suit": "hearts",
-    "value": 12
+    "value": "jack"
   },
   {
     "suit": "hearts",
-    "value": 13
+    "value": "queen"
   },
   {
     "suit": "hearts",
-    "value": 14
+    "value": "king"
+  },
+  {
+    "suit": "hearts",
+    "value": "ace"
   },
   {
     "suit": "diamonds",
-    "value": 2
+    "value": "2"
   },
   {
     "suit": "diamonds",
-    "value": 3
+    "value": "3"
   },
   {
     "suit": "diamonds",
-    "value": 4
+    "value": "4"
   },
   {
     "suit": "diamonds",
-    "value": 5
+    "value": "5"
   },
   {
     "suit": "diamonds",
-    "value": 6
+    "value": "6"
   },
   {
     "suit": "diamonds",
-    "value": 7
+    "value": "7"
   },
   {
     "suit": "diamonds",
-    "value": 8
+    "value": "8"
   },
   {
     "suit": "diamonds",
-    "value": 9
+    "value": "9"
   },
   {
     "suit": "diamonds",
-    "value": 10
+    "value": "10"
   },
   {
     "suit": "diamonds",
-    "value": 11
+    "value": "jack"
   },
   {
     "suit": "diamonds",
-    "value": 12
+    "value": "queen"
   },
   {
     "suit": "diamonds",
-    "value": 13
+    "value": "king"
   },
   {
     "suit": "diamonds",
-    "value": 14
+    "value": "ace"
   },
   {
     "suit": "clubs",
-    "value": 2
+    "value": "2"
   },
   {
     "suit": "clubs",
-    "value": 3
+    "value": "3"
   },
   {
     "suit": "clubs",
-    "value": 4
+    "value": "4"
   },
   {
     "suit": "clubs",
-    "value": 5
+    "value": "5"
   },
   {
     "suit": "clubs",
-    "value": 6
+    "value": "6"
   },
   {
     "suit": "clubs",
-    "value": 7
+    "value": "7"
   },
   {
     "suit": "clubs",
-    "value": 8
+    "value": "8"
   },
   {
     "suit": "clubs",
-    "value": 9
+    "value": "9"
   },
   {
     "suit": "clubs",
-    "value": 10
+    "value": "10"
   },
   {
     "suit": "clubs",
-    "value": "J"
+    "value": "jack"
   },
   {
     "suit": "clubs",
-    "value": "Q"
+    "value": "queen"
   },
   {
     "suit": "clubs",
-    "value": "K"
+    "value": "king"
   },
   {
     "suit": "clubs",
-    "value": "A"
+    "value": "ace"
   },
   {
     "suit": "spades",
-    "value": 2
+    "value": "2"
   },
   {
     "suit": "spades",
-    "value": 3
+    "value": "3"
   },
   {
     "suit": "spades",
-    "value": 4
+    "value": "4"
   },
   {
     "suit": "spades",
-    "value": 5
+    "value": "5"
   },
   {
     "suit": "spades",
-    "value": 6
+    "value": "6"
   },
   {
     "suit": "spades",
-    "value": 7
+    "value": "7"
   },
   {
     "suit": "spades",
-    "value": 8
+    "value": "8"
   },
   {
     "suit": "spades",
-    "value": 9
+    "value": "9"
   },
   {
     "suit": "spades",
-    "value": 10
+    "value": "10"
   },
   {
     "suit": "spades",
-    "value": "J"
+    "value": "jack"
   },
   {
     "suit": "spades",
-    "value": "Q"
+    "value": "queen"
   },
   {
     "suit": "spades",
-    "value": "K"
+    "value": "king"
   },
   {
     "suit": "spades",
-    "value": "A"
-  }
-}
+    "value": "ace"
+  },
+  {
+    "suit": "joker",
+    "value": "black"
+  },
+  {
+    "suit": "joker",
+    "value": "red"
+  },
+  {
+      "suit": "red",
+      "value": "back"
+    },
+    {
+      "suit": "blue",
+      "value": "back"
+    }
+  
+]

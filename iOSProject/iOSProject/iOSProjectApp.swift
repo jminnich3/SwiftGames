@@ -11,7 +11,7 @@ import SwiftUI
 struct iOSProjectApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(showWeb: false)
         }
     }
 }

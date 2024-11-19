@@ -1,26 +1,53 @@
-//
-//  ContentView.swift
-//  iOSProject
-//
-//  Created by COMP401 on 11/18/24.
-//
-
 import SwiftUI
 
 struct ContentView: View {
+    
+    @EnvironmentObject var VM : DeckViewModel
+    @State var showWeb: Bool
+    
     var body: some View {
-        VStack {
-//            Image(systemName: "globe")
-//                .imageScale(.large)
-//                .foregroundStyle(.tint)
-//            Text("Card Game!")
-            Text("game")
-            
+        VStack{
+            Image("logo")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .clipped()
+                .frame(width: 300, height: 100)
+                .padding(.top, 100)
+            TabView{
+                FeaturedView().tabItem{
+                    VStack{
+                        Image(systemName: "star")
+                        Text("Featured")
+                    }
+                }.environmentObject(VM)
+                GamesView().tabItem{
+                    VStack{
+                        Image(systemName: "gamecontroller")
+                        Text("Play")
+                    }
+                }.environmentObject(VM)
+                
+                RulesView().tabItem{
+                    VStack{
+                        Image(systemName: "checklist.unchecked")
+                        Text("Rules")
+                    }
+                }.environmentObject(VM)
+                
+                MapPlayersView().tabItem{
+                    VStack{
+                        Image(systemName: "person.3.fill")
+                        Text("Find Players")
+                    }
+                }.environmentObject(VM)
+                
+            }
         }
-        .padding()
     }
 }
 
-#Preview {
-    ContentView()
+#Preview{
+    let showWeb: Bool = false
+    ContentView(showWeb: showWeb)
+        .environmentObject(DeckViewModel())
 }
