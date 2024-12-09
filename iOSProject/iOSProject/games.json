@@ -1,47 +1,50 @@
 [
-    {
-        "name" : "Pairs"
-        "minAge" : "4"
-        "minPlayers" : "2"
-        "maxPlayers" : "4"
-        "featured" : "false"
-        "similarGames": [{"Go Fish"}]
-        "link" : "https://www.youtube.com/watch?v=oFfYmrGeTPs"
-        "description": "A game of memory and quick thinking! Flip the cards and try to match pairs before your opponents do. The clock’s ticking, and every match brings you one step closer to victory. Sharpen your memory and see if you can outmatch everyone to become the ultimate pair-finding pro!"
-        "gameplay": [{""}]
-    },
-    {
-        "name" : "Crazy 8s"
-        "minAge" : "5"
-        "minPlayers" : "2"
-        "maxPlayers" : "5"
-        "featured" : "false"
-        "similarGames": [{"UNO"}, {"Dutch Blitz"}, {"Quirkle"}]
-        "link" : "https://www.wikihow.com/Play-Crazy-Eights"
-        "description": "A fast-paced card game where anything can happen! Match cards by number or suit, and use wild eights to change the game. Be the first to shed your cards, but beware — your opponents are ready to throw a curveball at any moment! Who will go out first and claim the win?"
-        "gameplay": [{""}]
-    },
-    {
-        "name" : "Go Fish"
-        "minAge" : "5"
-        "minPlayers" : "2"
-        "maxPlayers" : "6"
-        "featured" : "false"
-        "similarGames" : [{"Pairs"}]
-        "link" : "https://thegeniusofplay.org/genius/play-ideas-tips/play-ideas/go-fish-card-game.aspx"
-        "description": "A classic card game where you ask, 'Do you have any threes?' and hope your friends don't 'Go Fish!' Collect matching pairs and try to outsmart your opponents. With every turn, the excitement grows — will you complete your set, or will you be left fishing for more?"
-        "gameplay": [{""}]
-    },
-    {
-        "name" : "Black Jack"
-        "minAge" : "18"
-        "minPlayers" : "1"
-        "maxPlayers" : "8"
-        "featured" : "true"
-        "similarGames" : [{"Red Dog"}, {"Casino War"}, {"Poker"}]
-        "link" : "https://www.winstar.com/blog/how-to-play-blackjack-a-beginners-guide-to-rules-and-strategy/"
-        "description": "Blackjack: The ultimate test of luck and strategy, where you battle the dealer to hit 21 without going over. With every card, you're one step closer to victory — but one wrong move could bust your hand! Can you outsmart the dealer and beat the odds? The thrill of the casino is just a card away!"
-        "gameplay": [{""}]
-    }
-    
+  {
+    "name": "Matching Pairs",
+    "minAge": 4,
+    "minPlayers": 2,
+    "maxPlayers": 4,
+    "featured": "false",
+    "similarGames": [["Go Fish"]],
+    "link": "https://www.youtube.com/watch?v=oFfYmrGeTPs",
+    "description": "A game of memory and quick thinking! Flip the cards and try to match pairs before your opponents do. The clock’s ticking, and every match brings you one step closer to victory. Sharpen your memory and see if you can outmatch everyone to become the ultimate pair-finding pro!",
+    "gameplay": [[""]],
+    "image": "matching pairs"
+  },
+  {
+    "name": "Crazy 8s",
+    "minAge": 5,
+    "minPlayers": 2,
+    "maxPlayers": 5,
+    "featured": "false",
+    "similarGames": [["UNO"], ["Dutch Blitz"], ["Quirkle"]],
+    "link": "https://www.wikihow.com/Play-Crazy-Eights",
+    "description": "A fast-paced card game where anything can happen! Match cards by number or suit, and use wild eights to change the game. Be the first to shed your cards, but beware — your opponents are ready to throw a curveball at any moment! Who will go out first and claim the win?",
+    "gameplay": [[""]],
+    "image": "crazyeights"
+  },
+  {
+    "name": "Go Fish",
+    "minAge": 5,
+    "minPlayers": 2,
+    "maxPlayers": 6,
+    "featured": "false",
+    "similarGames": [["Pairs"]],
+    "link": "https://thegeniusofplay.org/genius/play-ideas-tips/play-ideas/go-fish-card-game.aspx",
+    "description": "A classic card game where you ask, 'Do you have any threes?' and hope your friends don't 'Go Fish!' Collect matching pairs and try to outsmart your opponents. With every turn, the excitement grows — will you complete your set, or will you be left fishing for more?",
+    "gameplay": [["go fish"]],
+    "image": ""
+  },
+  {
+    "name": "Black Jack",
+    "minAge": 18,
+    "minPlayers": 1,
+    "maxPlayers": 8,
+    "featured": "true",
+    "similarGames": [["Red Dog"], ["Casino War"], ["Poker"]],
+    "link": "https://www.winstar.com/blog/how-to-play-blackjack-a-beginners-guide-to-rules-and-strategy/",
+    "description": "Blackjack: The ultimate test of luck and strategy, where you battle the dealer to hit 21 without going over. With every card, you're one step closer to victory — but one wrong move could bust your hand! Can you outsmart the dealer and beat the odds? The thrill of the casino is just a card away!",
+    "gameplay": [["black jack"]],
+    "image": "blackjack2"
+  }
 ]

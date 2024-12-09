@@ -216,12 +216,11 @@
     "value": "red"
   },
   {
-      "suit": "red",
-      "value": "back"
-    },
-    {
-      "suit": "blue",
-      "value": "back"
-    }
-  
+    "suit": "red",
+    "value": "back"
+  },
+  {
+    "suit": "blue",
+    "value": "back"
+  }
 ]

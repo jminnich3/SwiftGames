@@ -10,7 +10,7 @@ import Foundation
 
 class GameViewModel : ObservableObject{
     
-    @Published var games = [Game]()
+    @Published var games: [Game] = []
     
     init(){
         readJSON()
@@ -27,6 +27,8 @@ class GameViewModel : ObservableObject{
                 let json_decoder = JSONDecoder()
                 let jsonData =  try json_decoder.decode([Game].self, from: json_data)
                 self.games = jsonData
+                print("games count \(games.count)")
+                print("bozo")
                 
             }catch{
                 print(error)

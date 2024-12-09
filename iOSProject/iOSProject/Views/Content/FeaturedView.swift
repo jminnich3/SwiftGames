@@ -24,8 +24,8 @@ struct Model{
 
 struct FeaturedView: View {
     
-//    @EnvironmentObject var VM: DeckViewModel
-//    @State var recipe1 : Card?
+    @EnvironmentObject var VM: GameViewModel
+    @State var game1 : Game?
 //
     var body: some View {
         
@@ -63,5 +63,6 @@ struct FeaturedView: View {
 
 #Preview {
     FeaturedView()
+        .environmentObject(GameViewModel())
 //        .environmentObject(/*RecipeViewModel*/())
 }

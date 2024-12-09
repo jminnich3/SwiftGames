@@ -7,7 +7,7 @@
 import Foundation
 
 struct GameModel : Decodable, Identifiable{
-    var id : UUID? = UUID()
+    var id : UUID = UUID()
     var games: [Game]
     
     enum CodingKeys : CodingKey{
@@ -16,7 +16,7 @@ struct GameModel : Decodable, Identifiable{
 }
 
 struct Game : Decodable, Identifiable{
-    var id : UUID? = UUID()
+    var id : UUID = UUID()
     var name : String
     var minAge: Int?
     var minPlayers: Int?
@@ -26,6 +26,7 @@ struct Game : Decodable, Identifiable{
     var link : String?
     var description : String?
     var gameplay : [String]?
+    var image : String
     
     enum CodingKeys : CodingKey{
         case name
@@ -37,5 +38,6 @@ struct Game : Decodable, Identifiable{
         case link
         case description
         case gameplay
+        case image
     }
 }
