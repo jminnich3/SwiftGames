@@ -14,13 +14,7 @@
 
 import SwiftUI
 
-enum TABINDEX {
-    case featured, list
-}
 
-struct Model{
-    var state = "featured" // set up the default tabview
-}
 
 struct FeaturedView: View {
     
@@ -34,35 +28,35 @@ struct FeaturedView: View {
                 .bold()
                 .font(.largeTitle)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
+                .padding(.top, 50)
         }
-//
-//            TabView(){
-//                let featuredRecipes = VM.recipeArray.filter({ $0.featured })
-//                ForEach(featuredRecipes){ recipe in
-//                    FeaturedRecipeView(recipe: recipe)
-//                        .onAppear(){
-//                            recipe1 = recipe
-//                        }
-//
-//                }
-//            }
-//            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-//                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
-//
-//            if let selectedRecipe = recipe1{
-//                FeaturedRecipeInfo(recipe: selectedRecipe)
-//                    .padding(.bottom, 20)
-//                    .padding(.leading, 10)
-//            }
-//
-//        }
-//
-    }
+
+            TabView(){
+                let featuredGames = VM.games.filter({ $0.featured })
+                ForEach(featuredGames){ game in
+                    FeaturedGameView(game: game)
+                        .onAppear(){
+                            game1 = game
+                        }
+
+                }
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .always))
+
+            if let selectedGame = game1{
+                FeaturedGameInfo(game: selectedGame)
+                    .padding(.bottom, 50)
+                    .padding(.leading, 10)
+            }
+
+        }
+
 }
+
 
 #Preview {
     FeaturedView()
         .environmentObject(GameViewModel())
-//        .environmentObject(/*RecipeViewModel*/())
+
 }

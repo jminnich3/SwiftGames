@@ -10,6 +10,7 @@ import SwiftUI
 struct FeaturedGameView : View{
     
     var game : Game
+    
     @State var sheetOn : Bool = false
     
     var body: some View {
@@ -21,7 +22,7 @@ struct FeaturedGameView : View{
                         Image(game.image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 385, height: 400)
+                            .frame(width: 365, height: 350)
                             .clipped()
                             .shadow(color: Color.black.opacity(0.2), radius: 6)
                         
