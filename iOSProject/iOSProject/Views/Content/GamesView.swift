@@ -11,17 +11,24 @@ import SwiftUI
 struct GamesView : View {
 
    // @EnvironmentObject var VM : DeckViewModel
-    @EnvironmentObject var games: GameViewModel
+    @ObservedObject var games =  GameViewModel()
     
     var body: some View{
         Text("Games")
         
         VStack{
-            Text("\(games.games.count)")
-//            ForEach(games.games){ game in
-//                Text(game.name)
-//                Text(game.minAge)
-//            }
+        
+            ForEach(games.games){ game in
+                HStack{
+                    Text(game.name)
+                    Text("\(game.minAge)")
+                    Image(game.image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 100)
+                }
+                
+            }
         }
     }
 }
