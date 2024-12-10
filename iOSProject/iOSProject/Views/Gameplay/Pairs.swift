@@ -26,14 +26,14 @@ struct PairsView : View {
                     .cornerRadius(20)
                     .font(.system(size: 30))
                 
-                TextField("Number of Pairs", : Binding(
-                    get: {
-                        numberOfPairs ?? 5// Provide a default value if nil
-                    },
-                    set: {
-                        numberOfPairs = $0 // Update the optional email
-                    }
-                ))
+//                TextField("Number of Pairs", : Binding(
+//                    get: {
+//                        numberOfPairs ?? 5// Provide a default value if nil
+//                    },
+//                    set: {
+//                        numberOfPairs = $0 // Update the optional email
+//                    }
+//                ))
             }
             .padding()
             
