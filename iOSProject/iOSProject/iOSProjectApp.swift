@@ -12,6 +12,9 @@ struct iOSProjectApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(showWeb: false)
+                .environmentObject(LocationModel())
+                .environmentObject(DeckViewModel())
+                .environmentObject(GameViewModel())
         }
     }
 }

@@ -12,6 +12,7 @@ struct OnboardingViewDetails : View {
     var headline: String = ""
     var subHeadline :  String = ""
     var buttonAction : () -> Void // place holder for an action
+    var image : String = ""
     
     var body: some View {
         ZStack{
@@ -19,7 +20,10 @@ struct OnboardingViewDetails : View {
             VStack(spacing: 0){
                 Spacer()
                 Spacer()
-                Image("onboarding")
+                Image(image)
+                    .resizable()
+                    .clipped()
+                    .frame(width:250, height:250)
                 
                 Text(headline)
                     .font(Font.system(size: 22))
@@ -64,24 +68,49 @@ struct OnboardingView: View {
             
             TabView (selection: $selectedViewIndex) {
                 
-                OnboardingViewDetails(bgColor: Color(red: 111/255, green: 154/255, blue: 189/255),
+                OnboardingViewDetails(bgColor: Color(
+                    red: 70 / 255.0,
+                    green: 180 / 255.0,
+                    blue: 138 / 255.0,
+                    opacity: 255 / 255.0),
                                       headline: "Welcome to Card Stack Games!",
-                                      subHeadline: "Card Stack is the place to play") {
-                    // button Action
-                    
+                                      subHeadline: "Card Stack is the place to play",
+                                        image: "logo"){
+                  
                     withAnimation {
                      selectedViewIndex = 1
                     }
                 }
                 .tag(0)
                 
+                OnboardingViewDetails(bgColor: Color(red: 0.06, green: 0.37, blue: 0.06),
+                                      headline: "Play Classic Games",
+                                      subHeadline: "We’ll connect you other players in your area",
+                                      image: "CasinoChips") {
+                    // button Action
+                    withAnimation {
+                     selectedViewIndex = 2
+                    }
+                }
+                .tag(1)
+                
+                OnboardingViewDetails(bgColor: Color(red: 0.75, green: 0.5, blue: 0.5),
+                                      headline: "Find New Friends",
+                                      subHeadline: "We’ll connect you other players in your area",
+                                      image: "map"){
+                    withAnimation {
+                     selectedViewIndex = 3
+                    }
+                }
+                .tag(2)
+                
                 OnboardingViewDetails(bgColor: Color(red: 139/255, green: 166/255, blue: 65/255),
-                                      headline: "Meet new friends",
-                                      subHeadline: "We’ll connect you other players in your area") {
+                                      headline: "Compete For Bragging Rights",
+                                      subHeadline: "We’ll rank your success on the leaderboard!") {
                     // button Action
                     dismiss()
                 }
-                .tag(1)
+                .tag(3)
             }
             // .tabViewStyle(.page(indexDisplayMode: .always))
             .tabViewStyle(.page(indexDisplayMode: .never))
@@ -99,6 +128,14 @@ struct OnboardingView: View {
                     Circle()
                         .frame(width: 10)
                         .foregroundStyle(selectedViewIndex == 1 ? .white : .gray)
+                    
+                    Circle()
+                        .frame(width: 10)
+                        .foregroundStyle(selectedViewIndex == 2 ? .white : .gray)
+                    
+                    Circle()
+                        .frame(width: 10)
+                        .foregroundStyle(selectedViewIndex == 3 ? .white : .gray)
                     Spacer()
                 }
                 .padding(.bottom, 220)

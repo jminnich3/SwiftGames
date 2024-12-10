@@ -18,6 +18,8 @@ import CoreLocation
 
 class LocationModel : NSObject, CLLocationManagerDelegate, ObservableObject {
     
+    @Published var users = [UserModel]()
+    @Published var user : UserModel? = nil
         
     var locationManager = CLLocationManager() // create a location manager to request permission from user
     @Published var currentLocation : CLLocationCoordinate2D? = nil // save user's current location

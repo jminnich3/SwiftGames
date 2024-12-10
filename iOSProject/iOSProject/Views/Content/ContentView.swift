@@ -16,6 +16,11 @@ struct ContentView: View {
     @EnvironmentObject var games : GameViewModel
     @State var showWeb: Bool
     
+    @EnvironmentObject var LM : LocationModel
+    @State var needsOnboarding = true
+    //@AppStorage("onboarding") var needsOnboarding = true
+    
+    
     var body: some View {
         VStack{
             TabView{
@@ -53,7 +58,15 @@ struct ContentView: View {
                 }.tag(TABINDEX.findPlayers)
                 
             }.onAppear{
+                if needsOnboarding == false{
+                    LM.getUserLocation()
+                }
                 setStatus()
+            }.fullScreenCover(isPresented: $needsOnboarding) {
+                needsOnboarding = false
+                LM.getUserLocation()
+            } content: {
+                OnboardingView()
             }
         }
     }
@@ -79,4 +92,5 @@ struct ContentView: View {
     ContentView(showWeb: showWeb)
         .environmentObject(DeckViewModel())
         .environmentObject(GameViewModel())
+        .environmentObject(LocationModel())
 }
