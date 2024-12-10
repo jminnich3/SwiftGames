@@ -13,12 +13,17 @@ struct FeaturedGameInfo : View{
     
     var body : some View{
         VStack{
-            Text("Name: \(game.name)")
+            Text("\(game.name)")
                 .bold()
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.custom("Avenir Heavy", size: 18))
+                .font(.custom("Avenir Heavy", size: 22))
                 .padding(.leading, 15)
      
+            Text("Players: \(game.minPlayers) - \(game.maxPlayers)")
+                    .bold()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.custom("Avenir", size: 18))
+                    .padding(.leading, 15)
             
             Text("Minimum Age: \(game.minAge)")
                     .bold()
@@ -26,11 +31,7 @@ struct FeaturedGameInfo : View{
                     .font(.custom("Avenir Heavy", size: 18))
                     .padding(.leading, 15)
         
-            Text("Players: \(game.minPlayers) - \(game.maxPlayers)")
-                    .bold()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.custom("Avenir Heavy", size: 18))
-                    .padding(.leading, 15)
+            
                 
             HStack{
                 Text("Similar Games: ")

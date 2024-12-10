@@ -22,7 +22,7 @@ struct FeaturedGameView : View{
                         Image(game.image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 365, height: 350)
+                            .frame(width: 365, height: 200)
                             .clipped()
                             .shadow(color: Color.black.opacity(0.2), radius: 6)
                         

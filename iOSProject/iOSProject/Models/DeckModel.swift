@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DeckModel: Decodable, Identifiable{
+class DeckModel: Decodable, Identifiable, ObservableObject{
     var id : UUID? = UUID()
     var deck: [Card]
     
