@@ -10,7 +10,7 @@ import Foundation
 
 class DeckViewModel : ObservableObject{
     
-    @Published var deck = [Card]()
+    @Published var cards = [Card]()
     
     init(){
         readJSON()
@@ -26,11 +26,18 @@ class DeckViewModel : ObservableObject{
                 let json_data = try Data(contentsOf: url)
                 let json_decoder = JSONDecoder()
                 let jsonData =  try json_decoder.decode([Card].self, from: json_data)
-                self.deck = jsonData
+                self.cards = jsonData
                 
             }catch{
                 print(error)
             }
+        }
+    }
+    
+    func shuffle(){
+        for i in stride(from: cards.count-4, to: 0, by: -1){
+            let index = Int.random(in: 0 ..< i)
+            cards.swapAt(index, i)
         }
     }
 }
