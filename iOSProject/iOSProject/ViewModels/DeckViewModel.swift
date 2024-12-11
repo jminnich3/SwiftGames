@@ -35,7 +35,7 @@ class DeckViewModel : ObservableObject{
     }
     
     func shuffle(){
-        for i in stride(from: cards.count-4, to: 0, by: -1){
+        for i in stride(from: cards.count-5, to: 0, by: -1){
             let index = Int.random(in: 0 ..< i)
             cards.swapAt(index, i)
         }

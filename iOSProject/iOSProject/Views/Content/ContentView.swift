@@ -14,7 +14,8 @@ struct ContentView: View {
     @State var tabHashIndex : TABINDEX = .featured
     @EnvironmentObject var VM : DeckViewModel
     @EnvironmentObject var games : GameViewModel
-    @State var showWeb: Bool
+    @ObservedObject var dbService = DatabaseManager()
+    
     
     @EnvironmentObject var LM : LocationModel
     //@State var needsOnboarding = true
@@ -42,6 +43,7 @@ struct ContentView: View {
 //                .environmentObject(VM)
 //                .environmentObject(games)
                 .tag(TABINDEX.play)
+                //.tabBarHidden(true)
                 
                 RulesView().tabItem{
                     VStack{
@@ -57,12 +59,15 @@ struct ContentView: View {
                     }
                 }.tag(TABINDEX.leaderboard)
                 
-                MapPlayersView().tabItem{
+                MapPlayersView(dbService: dbService).tabItem{
                     VStack{
                         Image(systemName: "person.3.fill")
                         Text("Find Players")
                     }
+                }.onAppear {
+                    dbService.createDB() // Initialize the database when the view appears
                 }.tag(TABINDEX.findPlayers)
+                    .ignoresSafeArea()
             
             }.onAppear{
                 if needsOnboarding == false{
@@ -97,8 +102,8 @@ struct ContentView: View {
 }
 
 #Preview{
-    let showWeb: Bool = false
-    ContentView(showWeb: showWeb)
+    
+    ContentView()
         .environmentObject(DeckViewModel())
         .environmentObject(GameViewModel())
         .environmentObject(LocationModel())

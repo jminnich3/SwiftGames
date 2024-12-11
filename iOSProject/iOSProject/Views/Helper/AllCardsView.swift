@@ -30,6 +30,8 @@ struct AllCardsView: View {
                         .frame(width: 80)
                     Text("")
                 }
+            }.onAppear(){
+                VM.shuffle()
             }
             .padding()
         }
