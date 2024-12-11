@@ -10,15 +10,32 @@ import SwiftUI
 
 struct LeaderboardView : View {
 
-    @EnvironmentObject var VM : DeckViewModel
-    
-    var body: some View{
-        Text("Leaderboard")
+    @ObservedObject var dbService = DatabaseManager()
+    var body: some View {
+        VStack {
+            ScrollView{
+                VStack{
+                    ForEach(dbService.users){ user in
+                        HStack(spacing: 50){
+                            Text("\(user.id)")
+                            Text(user.username)
+                            if let lat = user.latitude{
+                                Text("\(lat)")
+                            }
+                        }.padding(20)
+                    }
+                }
+            }
+        }.padding()
+            .onAppear(){
+                dbService.createDB()
+            }
     }
+    
 }
 
 
 #Preview{
     LeaderboardView()
-        .environmentObject(DeckViewModel())
+        
 }
