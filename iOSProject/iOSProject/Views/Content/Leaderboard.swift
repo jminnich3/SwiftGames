@@ -19,8 +19,8 @@ struct LeaderboardView : View {
                         HStack(spacing: 50){
                             Text("\(user.id)")
                             Text(user.username)
-                            if let lat = user.latitude{
-                                Text("\(lat)")
+                            if let lat = user.latitude, let lon = user.longitude{
+                                Text("User: \(user.username), Latitude: \(lat), Longitude: \(lon)")
                             }
                         }.padding(20)
                     }

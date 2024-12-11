@@ -18,8 +18,9 @@ struct GamesView : View {
             ScrollView{
                 VStack{
                     NavigationLink{
-                        PairsView(bgColor: Color(red: 111/255, green: 154/255, blue: 189/255))
-                            .environmentObject(deck)
+                        // PairsView()
+                           // .environmentObject(deck)
+                            //tabBarHidden = true
                     } label:{
                         
                         HStack {
