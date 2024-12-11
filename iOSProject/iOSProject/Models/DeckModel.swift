@@ -20,6 +20,17 @@ struct Card: Decodable, Identifiable{
     var id : UUID? = UUID()
     var suit : String
     var value : String
+    var isShown : Bool = false
+    var numericValue: Int {
+        switch value {
+        case "jack", "queen", "king":
+            return 10
+        case "ace":
+            return 11
+        default:
+            return Int(value) ?? -1
+        }
+    }
     
     enum CodingKeys: CodingKey {
         case suit

@@ -18,8 +18,8 @@ struct ContentView: View {
     
     
     @EnvironmentObject var LM : LocationModel
-    //@State var needsOnboarding = true
-    @AppStorage("onboarding") var needsOnboarding = true
+    @State var needsOnboarding = true
+    //@AppStorage("onboarding") var needsOnboarding = true
     
     
     var body: some View {

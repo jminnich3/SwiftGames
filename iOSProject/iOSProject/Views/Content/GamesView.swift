@@ -102,8 +102,8 @@ struct GamesView : View {
                     }.padding(.bottom, 5)
                     
                     NavigationLink{
-                        BlackJackView()
-                            .environmentObject(deck)
+                       // BlackJackView()
+                            //.environmentObject(deck)
                     } label:{
                         
                         HStack {

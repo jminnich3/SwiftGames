@@ -18,6 +18,7 @@ struct User: Identifiable{
     var isPublic : Bool? = false
     var latitude : Double?
     var longitude : Double?
+    var blackJackMoney : Int?
 }
 
 struct PairsLeaderboard : Identifiable{
@@ -76,6 +77,7 @@ class DatabaseManager : ObservableObject{
             let user_isLocationPublic = SQLite.Expression<Bool?>("isPublic")
             let user_latitude = SQLite.Expression<Double?>("latitude")
             let user_longitude = SQLite.Expression<Double?>("longitude")
+            let user_blackJackMoney = SQLite.Expression<Int?>("blackJackMoney")
             
             userTable = Table("users")
             
@@ -90,13 +92,14 @@ class DatabaseManager : ObservableObject{
                 table.column(user_isLocationPublic)
                 table.column(user_latitude)
                 table.column(user_longitude)
+                table.column(user_blackJackMoney)
             })
 
             // insert into user table
-            try db?.run(userTable!.insert(user_username <- "jminnich23", user_password <- "Password1!", user_isLocationPublic <- true, user_latitude <- 41.1551664188161, user_longitude <- -80.08203945326402))
-            try db?.run(userTable!.insert(user_username <- "lucas1234", user_password <- "Password1!", user_isLocationPublic <- true, user_latitude <- 41.15660259671433, user_longitude <- -80.07981035897683))
-            try db?.run(userTable!.insert(user_username <- "zhang5678", user_password <- "Password1!", user_isLocationPublic <- true, user_latitude <- 41.155383056069816, user_longitude <- -80.07891717101118))
-            try db?.run(userTable!.insert(user_username <- "privatePhil", user_password <- "Password1!", user_isLocationPublic <- false, user_latitude <- nil, user_longitude <- nil))
+            try db?.run(userTable!.insert(user_username <- "jminnich23", user_password <- "Password1!", user_isLocationPublic <- true, user_latitude <- 41.1551664188161, user_longitude <- -80.08203945326402, user_blackJackMoney <- 150))
+            try db?.run(userTable!.insert(user_username <- "lucas1234", user_password <- "Password1!", user_isLocationPublic <- true, user_latitude <- 41.15660259671433, user_longitude <- -80.07981035897683, user_blackJackMoney <- 250))
+            try db?.run(userTable!.insert(user_username <- "zhang5678", user_password <- "Password1!", user_isLocationPublic <- true, user_latitude <- 41.155383056069816, user_longitude <- -80.07891717101118, user_blackJackMoney <- 350))
+            try db?.run(userTable!.insert(user_username <- "privatePhil", user_password <- "Password1!", user_isLocationPublic <- false, user_latitude <- nil, user_longitude <- nil, user_blackJackMoney <- nil))
             
 
             for user in try db!.prepare(userTable!){
@@ -106,6 +109,7 @@ class DatabaseManager : ObservableObject{
                 let uPublic = user[SQLite.Expression<Bool?>("isPublic")]
                 let ulat = user[SQLite.Expression<Double?>("latitude")]
                 let ulon = user[SQLite.Expression<Double?>("longitude")]
+                let uBJMoney = user[SQLite.Expression<Int?>("blackJackMoney")]
                 users.append(User(id: uid, username: uUsername, password: uPassword, isPublic: uPublic, latitude: ulat, longitude: ulon))
             }
             

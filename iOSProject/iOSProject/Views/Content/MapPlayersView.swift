@@ -74,7 +74,7 @@ struct MapPlayersView :  UIViewRepresentable {
             //            let annotationView = MKUserLocationView(annotation: annotation, reuseIdentifier: nil)
             //            let annotationView = MyAnnotationView(annotation: annotation, reuseIdentifier: nil)
                        var annotationView = MKAnnotationView()
-            
+         
                         if annotation.title == "jminnich23"{
                             annotationView = MyAnnotationView(annotation: annotation, reuseIdentifier: nil, image_name: "blackjack")
                        }
