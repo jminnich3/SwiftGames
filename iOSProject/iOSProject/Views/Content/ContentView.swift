@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum TABINDEX {
-    case featured, play, rules, findPlayers
+    case featured, play, rules, findPlayers, leaderboard
 }
 
 struct Model{
@@ -17,8 +17,8 @@ struct ContentView: View {
     @State var showWeb: Bool
     
     @EnvironmentObject var LM : LocationModel
-    @State var needsOnboarding = true
-    //@AppStorage("onboarding") var needsOnboarding = true
+    //@State var needsOnboarding = true
+    @AppStorage("onboarding") var needsOnboarding = true
     
     
     var body: some View {
@@ -50,13 +50,20 @@ struct ContentView: View {
                     }
                 }.tag(TABINDEX.rules)
                 
+                LeaderboardView().tabItem{
+                    VStack{
+                        Image(systemName: "medal")
+                        Text("Leaderboard")
+                    }
+                }.tag(TABINDEX.leaderboard)
+                
                 MapPlayersView().tabItem{
                     VStack{
                         Image(systemName: "person.3.fill")
                         Text("Find Players")
                     }
                 }.tag(TABINDEX.findPlayers)
-                
+            
             }.onAppear{
                 if needsOnboarding == false{
                     LM.getUserLocation()
@@ -79,6 +86,8 @@ struct ContentView: View {
             tabHashIndex = .play
         case "rules":
             tabHashIndex = .rules
+        case "leaderboard":
+            tabHashIndex = .leaderboard
         case "findPlayers":
             tabHashIndex = .findPlayers
         default:
