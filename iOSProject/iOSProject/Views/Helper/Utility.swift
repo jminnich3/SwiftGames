@@ -22,4 +22,6 @@ class Utility{
     
     static let charcoalGray: Color = Color(red: 51/255, green: 51/255, blue: 51/255)
     
+    static let gold: Color = Color(red: 255/255, green: 215/255, blue: 0/255)
+    
 }
