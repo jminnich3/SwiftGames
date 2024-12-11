@@ -13,6 +13,7 @@ struct GoFishView : View {
     @EnvironmentObject var VM : DeckViewModel
     
     var body: some View{
+        
         Text("GoFish")
     }
 }
