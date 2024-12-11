@@ -21,8 +21,8 @@ struct AllCardsView: View {
     var body: some View {
         ScrollView{
             VStack {
-                Text("\(VM.deck.count)")
-                ForEach(VM.deck){ card in
+                Text("\(VM.cards.count)")
+                ForEach(VM.cards){ card in
                     Text("\(card.value) of \(card.suit)")
                     Image(card.suit == "joker" ? ("\(card.value)_\(card.suit)") :  "\(card.value)_of_\(card.suit)")
                         .resizable()
