@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		67B350C92D09648300B2D3C8 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 67B350C82D09648300B2D3C8 /* SQLite */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		670948122CEBE95000EA72BD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -42,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				67B350C92D09648300B2D3C8 /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +105,7 @@
 			);
 			name = iOSProject;
 			packageProductDependencies = (
+				67B350C82D09648300B2D3C8 /* SQLite */,
 			);
 			productName = iOSProject;
 			productReference = 670948012CEBE94F00EA72BD /* iOSProject.app */;
@@ -177,6 +183,9 @@
 			);
 			mainGroup = 670947F82CEBE94F00EA72BD;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				67B350C72D09648300B2D3C8 /* XCRemoteSwiftPackageReference "SQLite" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 670948022CEBE94F00EA72BD /* Products */;
 			projectDirPath = "";
@@ -534,6 +543,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		67B350C72D09648300B2D3C8 /* XCRemoteSwiftPackageReference "SQLite" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		67B350C82D09648300B2D3C8 /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 67B350C72D09648300B2D3C8 /* XCRemoteSwiftPackageReference "SQLite" */;
+			productName = SQLite;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 670947F92CEBE94F00EA72BD /* Project object */;
 }

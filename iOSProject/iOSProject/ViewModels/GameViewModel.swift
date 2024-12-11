@@ -27,7 +27,6 @@ class GameViewModel : ObservableObject{
                 let json_decoder = JSONDecoder()
                 let jsonData =  try json_decoder.decode([Game].self, from: json_data)
                 self.games = jsonData
-                print("Decoded games: \(jsonData)")
                 
             }catch{
                 print(error)

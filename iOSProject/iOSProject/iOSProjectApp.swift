@@ -11,7 +11,7 @@ import SwiftUI
 struct iOSProjectApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(showWeb: false)
+            ContentView(showWeb: false, needsOnboarding: true)
                 .environmentObject(LocationModel())
                 .environmentObject(DeckViewModel())
                 .environmentObject(GameViewModel())
