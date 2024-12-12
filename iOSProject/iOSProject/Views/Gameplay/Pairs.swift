@@ -1,20 +1,17 @@
-//
-//  BlackJack.swift
-//  iOSProject
-//
-//  Created by Josh Minnich on 11/30/24.
-//
 
 import SwiftUI
 
 
 class PairsGameModel: ObservableObject {
+    struct cardList {
+        var cards: [Card]
+    }
     
     @Published private var deck: [Card]
     
     init(deck: [Card]) {
         self.deck = deck
-    
+        
     }
     
     @Published private var timer = 0
@@ -32,7 +29,7 @@ class PairsGameModel: ObservableObject {
     @Published var gameWon : Bool = false;
     
     func waitForTwoSeconds() async {
-            try? await Task.sleep(nanoseconds:  1_000_000_000) // 2 seconds in nanoseconds
+        try? await Task.sleep(nanoseconds:  1_000_000_000)
     }
     
     func runGame(){
@@ -50,6 +47,12 @@ class PairsGameModel: ObservableObject {
         createBoard()
     }
     
+    func addCard(card: Card){
+        boardCards.append(card)
+    }
+    
+    
+    
     func cardTurned(index: Int){
         print("first card index BEFOR \(firstCardIndex)")
         print(firstCardSelected)
@@ -60,42 +63,23 @@ class PairsGameModel: ObservableObject {
             displayedBoardCards[firstCardIndex].isShown = true
             displayedBoardCards[index].isShown = true
             
-           
-                
-                if(index == firstCardIndex)
-                {
-                    
-                    print("SAME CARD")
-                    displayedBoardCards[index].isShown = false
-                }
-                
-                else if(displayedBoardCards[firstCardIndex].numericValue == displayedBoardCards[index].numericValue && displayedBoardCards[firstCardIndex].suit == displayedBoardCards[index].suit) && displayedBoardCards[index].suit != "stub"{
-                    
-                    var stubCard: Card = Card(suit: "stub", value: "1", image: "check")
-                    displayedBoardCards[index] = stubCard
-                    displayedBoardCards[firstCardIndex] = stubCard
-                    
-                    
-                    pairsFound+=1
-                    if(pairsFound == numPairs)
-                    {
-                        gameWon = true
-                    }
-                    
-                
+            if(index == firstCardIndex)
+            {
+                print("SAME CARD")
+                displayedBoardCards[index].isShown = false
             }
             
-            
+            else if(displayedBoardCards[firstCardIndex].numericValue == displayedBoardCards[index].numericValue && displayedBoardCards[firstCardIndex].suit == displayedBoardCards[index].suit) && displayedBoardCards[index].suit != "stub"{
+                
+                pairsFound+=1
+                if(pairsFound == numPairs)
+                {
+                    gameWon = true
+                }
+            }
             // not found, reset
-            
-                                
-//            displayedBoardCards[index].isShown = false
-//            displayedBoardCards[firstCardIndex].isShown = false
-            
-            
-    
-            
-               
+            //            displayedBoardCards[index].isShown = false
+            //            displayedBoardCards[firstCardIndex].isShown = false
             
         }
         else{
@@ -103,7 +87,7 @@ class PairsGameModel: ObservableObject {
             withAnimation(.easeInOut(duration: 0.5).delay(0.5)) {
                 displayedBoardCards[index].isShown = true
             }
-        
+            
             firstCardIndex = index
             firstCardSelected = true
         }
@@ -178,19 +162,20 @@ class PairsGameModel: ObservableObject {
 struct PairsView : View {
     @EnvironmentObject var deck : DeckViewModel
     @StateObject var PGM: PairsGameModel
+    
+    @EnvironmentObject var VM : DeckViewModel
     @State var bgColor: Color = Utility.beige
     @State var gameStarted = true;
     @State var gameQuit = false;
     @State var gameWon = false;
-   
+    
     
     init(deck: DeckViewModel){
         _PGM = StateObject(wrappedValue: PairsGameModel(deck: deck.cards))
     }
-    
+    @State var numberOfPairs : Int = 4
+    //    @State var myCards: cardList
     var body: some View{
-        
-        
         // game side
         if(gameStarted){
             ZStack{    Color(bgColor) // color
@@ -213,116 +198,127 @@ struct PairsView : View {
                         .cornerRadius(20)
                         .bold()
                 }  // Title
-                    // real content
                     
-//                    VStack{
-//                        ForEach(PGM.displayedBoardCards, id: \.self){card in
-//                            Image(PGM.cardImage(card: card))
-//                                .resizable()
-//                                .aspectRatio(contentMode: .fit)
-//                                .frame(width: 80, height: 120)
-//                                .clipped()
-//                            
-//                        }
-//                    }
-//                    
-                    
-                    //GeometryPairsView(PGM: PGM)
-                    GeometryReader{ gp in
-                        VStack(alignment: .leading){
-                            Text("Matching Pairs")
-                                .bold()
-                                .font(.title)
+                    ZStack{
+                        Color(bgColor)
+                        VStack{
+                            Spacer()
                             
-                            ScrollView{
-//                                LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 3), spacing: 20) {
-//                                    ForEach(PGM.displayedBoardCards, id: \.self) { card in
-//                                        Button {
-//                                            // Add tap logic
-//                                        } label: {
-//                                            Image(PGM.cardImage(card: card))
-//                                                .resizable()
-//                                                .aspectRatio(contentMode: .fit)
-//                                                .frame(width: (gp.size.width - 60) / 3)
-//                                                .clipped()
-//                                        }
-//                                    }
-//                                }
-                                // GridItem(spacing) space between columns
-                                LazyVGrid(columns: [GridItem(spacing: 10), GridItem(spacing: 10), GridItem(spacing: 10)],
-                                          spacing: 20){ // space between rows
-                                    ForEach(PGM.displayedBoardCards.indices, id: \.self) { index in
-                                            let card = PGM.displayedBoardCards[index]
-                                        Button {
-                                            
-                                            PGM.cardTurned(index: index)
-                                          
+                            GeometryReader{ gp in
+                                VStack(alignment: .leading){
+                                    Text("Matching Pairs")
+                                        .bold()
+                                        .font(.title)
                                     
-                                            } label: {
-                                                Image(PGM.cardImage(card: card))
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fit)
-                                                    .frame(width: (gp.size.width - 60) / 3)
-                                                    .clipped()
+                                    ScrollView{
+                                        
+                                        LazyVGrid(columns: [GridItem(spacing: 10), GridItem(spacing: 10), GridItem(spacing: 10)],
+                                                  spacing: 20){ // space between rows
+                                            ForEach(PGM.displayedBoardCards.indices, id: \.self) { index in
+                                                let card = PGM.displayedBoardCards[index]
+                                                Button {
+                                                    
+                                                    PGM.cardTurned(index: index)
+                                                    
+                                                } label: {
+                                                    Image(PGM.cardImage(card: card))
+                                                        .resizable()
+                                                        .aspectRatio(contentMode: .fit)
+                                                        .frame(width: (gp.size.width - 60) / 3)
+                                                        .clipped()
+                                                }
                                             }
+                                            
                                         }
+                                        HStack{
+                                            NavigationLink{
+                                                ContentView()
+                                            }label : {
+                                                ZStack{
+                                                    RoundedRectangle(cornerRadius: 14)
+                                                        .foregroundStyle(Color.white)
+                                                        .frame(width: 50, height: 40)
+                                                    Text("Quit")
+                                                        .bold()
+                                                        .foregroundStyle(.black)
+                                                }
+                                            }.padding(.horizontal, 10)
+                                        }.padding(.horizontal)
+                                        Spacer()
+                                        Text("Matching Pairs")
+                                            .foregroundColor(.black)
+                                            .cornerRadius(20)
+                                            .bold()
+                                        Spacer()
+                                        Spacer()
+                                        Spacer()
+                                        
+                                        
+                                        //                            .padding(.bottom, 115)
+                                    }
+                                    
+                                    
+                                    
+                                    
+                                    Spacer()
+                                    
+                                    Spacer()
                                     
                                 }
-                            }
-                        }.padding(.horizontal, 10)
-                    }
-                    
-                }
-                .onAppear(){self.deck.shuffle()
-                    PGM.runGame()} .padding()
-            }.ignoresSafeArea()
-            
-        }
-        
-        // Intro View, game hasn't started
-        else{
-            ZStack{
-                Color(bgColor)
-                VStack{
-                    Text("Matching Pairs")
-                        .foregroundColor(.black)
-                        .bold()
-                        .cornerRadius(20)
-                        .font(.system(size: 30))
-                    Button{
-                        gameStarted = true
-                    }label : {
-                        ZStack{
-                            RoundedRectangle(cornerRadius: 14)
-                                .foregroundStyle(Color.white)
-                                .frame(width: 200, height: 50)
-                            Text("Play")
-                                .bold()
-                                .foregroundStyle(.black)
+                                .onAppear(){
+                                    self.VM.shuffle()
+                                }
+                                .onAppear(){self.deck.shuffle()
+                                    PGM.runGame()} .padding()
+                                    .padding()
+                                
+                            }.ignoresSafeArea()
+                            
                         }
-                    }.padding(.horizontal)
-                        .padding(.bottom, 115)
-                    
+                        
+                    }
                 }
-                .padding()
-                
-            }.ignoresSafeArea()
+            }
+            
         }
     }
 }
-
+        
 #Preview{
     @Previewable var deck : DeckViewModel = DeckViewModel()
     PairsView(deck: deck)
         .environmentObject(DeckViewModel())
 }
-
-
-//struct GeometryPairsView{
-//    
-//    @ObservedObject var PGM : PairsGameModel
-//    var body: some View{
-//        
-//    }
-//    
-//}
+        
+        
+        //struct GeometryPairsView{
+        //
+        //    @ObservedObject var PGM : PairsGameModel
+        //    var body: some View{
+        //
+        //#Preview{
+        //    var cards: cardList
+        //    var VM : DeckViewModel
+        //    VM.shuffle()
+        //    for i in 1...5{
+        //        cards.addCard(card: VM.cards[i])
+        //    }
+        //
+        //    PairsView(bgColor: Utility.beige, myCards: cards)
+        //        .environmentObject(DeckViewModel())
+        //}
+        
+        //                                LazyVGrid(columns: Array(repeating: .init(.flexible(), spacing: 10), count: 3), spacing: 20) {
+        //                                    ForEach(PGM.displayedBoardCards, id: \.self) { card in
+        //                                        Button {
+        //                                            // Add tap logic
+        //                                        } label: {
+        //                                            Image(PGM.cardImage(card: card))
+        //                                                .resizable()
+        //                                                .aspectRatio(contentMode: .fit)
+        //                                                .frame(width: (gp.size.width - 60) / 3)
+        //                                                .clipped()
+        //                                        }
+        //                                    }
+        //                                }
+        // GridItem(spacing) space between columns
