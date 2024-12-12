@@ -25,6 +25,7 @@ class GoFishModel : ObservableObject
     @Published var askEnabled = false;
     @Published var giveEnabled = false;
     @Published var newGameButton = false;
+    @Published var makeGoEnabled = false;
     
     @Published var askNum = 0
    
@@ -35,6 +36,12 @@ class GoFishModel : ObservableObject
                     fishDeck.swapAt(index, i)
                 }
 
+    }
+    func cardImage(card: FishCard) -> String{
+        if (!card.isShown){
+            return ("back_of_red")
+        }
+       return (card.suit == "joker" ? ("\(card.value)_\(card.suit)") :  "\(card.value)_of_\(card.suit)")
     }
     
     
@@ -172,6 +179,8 @@ class GoFishModel : ObservableObject
         }
         return false
     }
+    
+    
     func botAsk() -> String
     {
         if(failedAsk.count>3)
@@ -200,14 +209,48 @@ class GoFishModel : ObservableObject
         {
             askNum = maxBookIndex+2
         }
-        else{
+        else
+        {
             askNum = Int.random(in: 2..<15)
             while(alreadyTried(askNum: askNum))
             {
                 askNum = Int.random(in: 2..<15)
             }
         }
-      return "hi"
+       if(askNum<=10)
+      {
+           return "Opponent asks: do you have a \(askNum)?"
+           
+      }
+        else if(askNum==11){
+            return "Opponent asks: do you have a jack?"
+        }
+        else if(askNum==12){
+            return "Opponent asks: do you have a queen?"
+        }
+        else if(askNum==13)
+        {
+            return "Opponent asks: do you have a king?"
+        }
+        else if(askNum==14)
+        {
+            return "Opponent asks: do you have an ace?"
+        }
+       return "asking error"
+    }
+    func playerResponse()
+    {
+        for card in playerCards
+        {
+            if(card.numericValue==askNum)
+            {
+                giveEnabled = true
+            }
+        }
+        if(giveEnabled != true)
+        {
+            makeGoEnabled = true
+        }
     }
     
     func playerFish()
@@ -231,6 +274,7 @@ class GoFishModel : ObservableObject
         askEnabled = true
         newGameButton = false
         shuffle()
+        makeGoEnabled = false
         
         for i in 0..<7
         {
@@ -265,8 +309,9 @@ struct GoFishView : View {
         }
         var body: some View{
             ZStack{
+                Color(bgColor)
                 VStack{
-                    Color(bgColor)
+                  
                     VStack{
                         Text("Go Fish")
                             .foregroundColor(.white)
@@ -298,11 +343,25 @@ struct GoFishView : View {
                             }
                             
                         }
+                        ScrollView(.horizontal)
+                        {
+                            HStack{
+                                ForEach(GFM.botCards){ card in
+                                    Image(GFM.cardImage(card: card))
+                                        .resizable()
+                                        .frame(width: cardWidth, height: cardHeight)
+                                }
+                            }
+                        }
                     }
                     
                 }
                 
             }
+            .onAppear(){
+                fishDeck.shuffle()
+                GFM.initialDeal()
+            }.ignoresSafeArea()
         }
     }
 
