@@ -8,26 +8,29 @@
 import SwiftUI
 class GoFishModel : ObservableObject
 {
-    @Published private var deck: [Card]
+    @Published private var fishDeck: [FishCard]
     
-    init(deck: [Card]) {
-        self.deck = deck
+    init(fishDeck: [FishCard]) {
+        self.fishDeck = fishDeck
     }
-    @Published  var playerCards: [Card] = []
-    @Published  var botCards: [Card] = []
+    @Published  var playerCards: [FishCard] = []
+    @Published  var botCards: [FishCard] = []
     
     @Published var playerBooks: [Int] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     
     @Published var botBooks: [Int] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     
     @Published var wonGame: Int = -1
+    @Published var fishEnabled = false;
+    @Published var askEnabled = false;
     
     func shuffle(){
         
-        for i in stride(from: self.deck.count-5, to: 0, by: -1){
-            let index = Int.random(in: 0 ..< i)
-            self.deck.swapAt(index, i)
-        }
+        for i in stride(from: fishDeck.count-5, to: 0, by: -1){
+                    let index = Int.random(in: 0 ..< i)
+                    fishDeck.swapAt(index, i)
+                }
+
     }
     
     func addToPlayerBook(index: Int){
@@ -39,29 +42,24 @@ class GoFishModel : ObservableObject
         botBooks[index] =  botBooks[index]+1
     }
     func dealPlayer(showCard: Bool){
-        var dealCard : Card = deck.removeFirst()
+        var dealCard : FishCard = fishDeck.removeFirst()
         dealCard.isShown = showCard
-        
-        playerCards.append(dealCard)
-        addToPlayerBook(index: dealCard.numericValue-2)
-//
-//        if(calculatePlayerScore()==21)
-//        {
-//            hitButtonEnabled = false
-//            standButtonEnabled = false
-//        }
-//        
-//        if(calculatePlayerScore()>21)
-//        {
-//            playerBust = true
-//            hitButtonEnabled = false
-//        }
+        if(dealCard.numericValue != -1)
+        {
+            
+            playerCards.append(dealCard)
+            addToPlayerBook(index: dealCard.numericValue-2)
+        }
+
     }
     func dealBot(showCard: Bool){
-        var dealCard : Card = deck.removeFirst()
+        var dealCard : FishCard = fishDeck.removeFirst()
         dealCard.isShown = showCard
-        botCards.append(dealCard)
-        addToBotBook(index: dealCard.numericValue-2)
+        if(dealCard.numericValue != -1)
+        {
+            botCards.append(dealCard)
+            addToBotBook(index: dealCard.numericValue-2)
+        }
 //
 //        if(calculatePlayerScore()==21)
 //        {
@@ -97,28 +95,37 @@ class GoFishModel : ObservableObject
         }
         return score
     }
+    //what we'll need to call
     func checkGameOver() -> Bool{
         if(calculatePlayerScore()>=7)
         {
-            return true
             wonGame = 1
+            return true
+           
         }
         if(calculateBotScore()>=7)
         {
-            return true
             wonGame = 0
+            return true
+         
         }
        
         
         
         return false
     }
-    
     func initialDeal(){
+        wonGame = -1
+        playerCards = []
+        botCards = []
+        
         for i in 0..<7
         {
+            shuffle()
+            initialDeal()
             dealPlayer(showCard: true)
             dealBot(showCard: false)
+            
         }
                 
     }
@@ -128,7 +135,7 @@ class GoFishModel : ObservableObject
 struct GoFishView : View {
 
     
-    @EnvironmentObject var deck : DeckViewModel
+    @EnvironmentObject var fishDeck : FishViewModel
     
     
     @StateObject var GFM: GoFishModel
@@ -140,8 +147,8 @@ struct GoFishView : View {
         
   
         
-        init(deck: DeckViewModel) {
-            _GFM = StateObject(wrappedValue: GoFishModel(deck: deck.cards))
+        init(fishDeck: FishViewModel) {
+            _GFM = StateObject(wrappedValue: GoFishModel(fishDeck: fishDeck.cards))
         }
         var body: some View{
             ZStack{
@@ -189,9 +196,9 @@ struct GoFishView : View {
 
 
 #Preview{
-    @Previewable var deck : DeckViewModel = DeckViewModel()
-    GoFishView(deck: deck)
-        .environmentObject(DeckViewModel())
-        .onAppear { deck.shuffle() }
+    @Previewable var fishDeck : FishViewModel = FishViewModel()
+    GoFishView(fishDeck: fishDeck)
+        .environmentObject(FishViewModel())
+        .onAppear { fishDeck.shuffle() }
 
 }

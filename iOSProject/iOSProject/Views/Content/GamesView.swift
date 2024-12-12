@@ -12,6 +12,7 @@ struct GamesView : View {
 
     @EnvironmentObject var games : GameViewModel
     @EnvironmentObject var deck : DeckViewModel
+    @EnvironmentObject var fishDeck: FishViewModel
     
     var body: some View {
         NavigationView{
@@ -74,8 +75,8 @@ struct GamesView : View {
                     }.padding(.bottom, 5)
                     
                     NavigationLink{
-                        GoFishView(deck: deck)
-                            .environmentObject(deck)
+                        GoFishView(fishDeck: fishDeck)
+                            .environmentObject(fishDeck)
                     } label:{
                         
                         HStack {
