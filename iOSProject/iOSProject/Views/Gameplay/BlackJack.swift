@@ -10,6 +10,7 @@ import SwiftUI
 class BlackJackModel : ObservableObject{
    
     @Published private var deck: [Card]
+    
     init(deck: [Card]) {
         self.deck = deck
     }
@@ -47,7 +48,6 @@ class BlackJackModel : ObservableObject{
             score -= 10
             aceCount -= 1
         }
-        
         return score
     }
     

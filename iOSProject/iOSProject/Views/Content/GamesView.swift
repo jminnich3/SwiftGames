@@ -75,7 +75,7 @@ struct GamesView : View {
                     }.padding(.bottom, 5)
                     
                     NavigationLink{
-                        GoFishView()
+                        GoFishView(deck: deck)
                             .environmentObject(deck)
                     } label:{
                         

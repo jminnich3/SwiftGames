@@ -8,17 +8,20 @@
 import SwiftUI
 
 
-struct CrazyEightsView : View {
-
-    @EnvironmentObject var VM : DeckViewModel
     
-    var body: some View{
-        Text("Crazy 8s")
-    }
+
+struct CrazyEightsView : View {
+    
+    
+   
+//    @State var cardsPerRow: Int = 4
+    
+    
 }
 
-
 #Preview{
-    CrazyEightsView()
+    @Previewable var deck : DeckViewModel = DeckViewModel()
+    CrazyEightsView(deck: deck)
         .environmentObject(DeckViewModel())
+        .onAppear { deck.shuffle() }
 }
