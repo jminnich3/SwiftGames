@@ -25,7 +25,7 @@ struct FishCard: Decodable, Identifiable, Hashable{
     //for giving a card or being asked for one "example: got any threes?"
     var canGiveUp: Bool = false
 
-    var canAskFor: Bool = false
+  
     var numericValue: Int {
         switch value {
         case "jack":

@@ -19,11 +19,15 @@ class GoFishModel : ObservableObject
     @Published var playerBooks: [Int] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     
     @Published var botBooks: [Int] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    
+    @Published var failedAsk: [Int] = []
     @Published var wonGame: Int = -1
     @Published var fishEnabled = false;
     @Published var askEnabled = false;
+    @Published var giveEnabled = false;
+    @Published var newGameButton = false;
     
+    @Published var askNum = 0
+   
     func shuffle(){
         
         for i in stride(from: fishDeck.count-5, to: 0, by: -1){
@@ -33,13 +37,14 @@ class GoFishModel : ObservableObject
 
     }
     
-    func addToPlayerBook(index: Int){
+    
+    func addToPlayerBook(cardValue: Int){
         //card index one before card value probably
-        playerBooks[index] =  playerBooks[index]+1
+        playerBooks[cardValue-2] +=  1
     }
-    func addToBotBook(index: Int){
+    func addToBotBook(cardValue: Int){
         //card index one before card value probably
-        botBooks[index] =  botBooks[index]+1
+        botBooks[cardValue-2] +=  1
     }
     func dealPlayer(showCard: Bool){
         var dealCard : FishCard = fishDeck.removeFirst()
@@ -48,7 +53,7 @@ class GoFishModel : ObservableObject
         {
             
             playerCards.append(dealCard)
-            addToPlayerBook(index: dealCard.numericValue-2)
+            addToPlayerBook(cardValue: dealCard.numericValue)
         }
 
     }
@@ -58,7 +63,7 @@ class GoFishModel : ObservableObject
         if(dealCard.numericValue != -1)
         {
             botCards.append(dealCard)
-            addToBotBook(index: dealCard.numericValue-2)
+            addToBotBook(cardValue: dealCard.numericValue)
         }
 //
 //        if(calculatePlayerScore()==21)
@@ -114,15 +119,123 @@ class GoFishModel : ObservableObject
         
         return false
     }
+    func givePlayer(card: FishCard)
+    {
+        playerCards.append(card)
+        addToPlayerBook(cardValue: card.numericValue)
+    }
+    
+    func giveBot(card: FishCard)
+    {
+        botCards.append(card)
+        addToBotBook(cardValue: card.numericValue)
+    }
+    
+    func playerAsk(askValue: Int) -> String
+    {
+        var counter = 0
+        for card in botCards{
+            
+            if(card.numericValue==askValue)
+            {
+                if(botBooks[card.numericValue-2] < 4)
+                {
+                   
+                    givePlayer(card: card)
+                    botCards.remove(at: counter)
+                    askEnabled = false
+                    return "The opponent had a \(card.value) of \(card.suit)!!!"
+                    
+                }
+              else
+                {
+                  fishEnabled = true
+                  askEnabled = false
+                  return "The opponent has a book of \(card.value)s already, Go Fish!!!"
+                }
+            }
+            counter += 1
+        }
+        fishEnabled = true
+        askEnabled = false
+        return "The opponent did not have a card of that value, Go Fish!"
+     
+    }
+    func alreadyTried(askNum: Int) -> Bool
+    {
+        for num in failedAsk{
+            if(num == askNum)
+            {
+                return true
+            }
+            
+        }
+        return false
+    }
+    func botAsk() -> String
+    {
+        if(failedAsk.count>3)
+        {
+            failedAsk.removeFirst()
+        }
+   
+        var maxBookLength = 0
+        var maxBookIndex = 0
+        var counter = 0
+        for book in botBooks {
+            
+            if(book>maxBookLength)
+            {
+                if(!alreadyTried(askNum: counter+2))
+                {
+                    maxBookLength = book
+                    maxBookIndex = counter
+                }
+                
+            }
+            
+            counter += 1
+        }
+        if(maxBookLength>=2)
+        {
+            askNum = maxBookIndex+2
+        }
+        else{
+            askNum = Int.random(in: 2..<15)
+            while(alreadyTried(askNum: askNum))
+            {
+                askNum = Int.random(in: 2..<15)
+            }
+        }
+      return "hi"
+    }
+    
+    func playerFish()
+    {
+        fishEnabled = false
+        dealPlayer(showCard: true)
+    }
+    
     func initialDeal(){
         wonGame = -1
         playerCards = []
         botCards = []
         
+        playerBooks = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        
+        botBooks = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        askNum = 0
+        failedAsk = []
+     
+        fishEnabled = false
+        askEnabled = true
+        newGameButton = false
+        shuffle()
+        
         for i in 0..<7
         {
-            shuffle()
-            initialDeal()
+       
+        
             dealPlayer(showCard: true)
             dealBot(showCard: false)
             
