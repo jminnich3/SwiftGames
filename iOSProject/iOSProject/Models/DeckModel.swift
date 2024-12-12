@@ -16,11 +16,12 @@ class DeckModel: Decodable, Identifiable, ObservableObject{
     }
 }
 
-struct Card: Decodable, Identifiable{
+struct Card: Decodable, Identifiable, Hashable{
     var id : UUID? = UUID()
     var suit : String
     var value : String
     var isShown : Bool = false
+    var image : String?
     var numericValue: Int {
         switch value {
         case "jack", "queen", "king":

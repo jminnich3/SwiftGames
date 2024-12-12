@@ -256,6 +256,12 @@ class BlackJackModel : ObservableObject{
 }
 
 
+
+
+
+
+
+
 struct BlackJackView : View {
 
     @State var bgColor: Color = Color(red: 0.06, green: 0.37, blue: 0.06)
@@ -263,10 +269,7 @@ struct BlackJackView : View {
     @State var cardHeight: CGFloat = 120
     @State var cardsPerRow: Int = 4
    
-    
-    
     @EnvironmentObject var deck : DeckViewModel
-    
     
     @StateObject var BJM: BlackJackModel
     
@@ -285,8 +288,6 @@ struct BlackJackView : View {
                     .font(.system(size: 30))
                     .padding(.top, 50)
                     .padding()
-                
-             
                 
                 VStack{
                     
@@ -513,5 +514,4 @@ struct BlackJackView : View {
     @Previewable var deck : DeckViewModel = DeckViewModel()
     BlackJackView(deck: deck)
         .environmentObject(DeckViewModel())
-        .onAppear { deck.shuffle() }
 }
