@@ -24,4 +24,8 @@ class Utility{
     
     static let gold: Color = Color(red: 255/255, green: 215/255, blue: 0/255)
     
+    static let cardWidth: Int = 100
+    
+    static let cardHeight: Int = 150
+    
 }

@@ -7,51 +7,104 @@
 //import SwiftUI
 //import Foundation
 //
-//class PairsGameModel: ObservableObject {
-//        
-//        @Published private var playerCard = 0
-//        @Published private var playerWins = 0
-//        @Published private var numPairs = 6
-//        
-//    
-//        @EnvironmentObject var deck : DeckViewModel
-//        
-//        var playerWinsStr : String{
-//            get{
-//                return String(playerWins)
-//            }
-//        }
-//        
-//        func getCardImage(card: Card) -> String{
-//           return playerCard > 0 ? String("card\(playerCard)") :
-//             "back"
-//        }
-//        
-//        func getCards() -> [Card] {
-//            let cards = deck.cards.shuffle()
-//            return Array(cards.prefix(numPairs))
-//        }
-//
-//        func getDoubledCards() -> [Card] {
-//            let cards = getCards()
-//            let doubledCards = cards + cards
-//            return doubledCards.shuffle()
-//        }
-//    
-//        func shuffle(cards: [Card]) -> [Card]{
-//            for i in stride(from: cards.count, to: 0, by: -1){
-//                let index = Int.random(in: 0 ..< i)
-//                cards.swapAt(index, i)
-//            }
-//        }
-//    }
-//        
-//
-//}
+////class PairsGameModel: ObservableObject {
+////    
+////        @Published private var timer = 0
+////        @Published private var numPairs = 6
+//////        @Published var sourceCards: [Card] = []
+////        @Published var boardCards: [Card] = []
+////        @Published var displayedBoardCards: [Card] = []
+////        @Published var canFlip : Bool = false
+////        @Published var pairsFound : Int = 0
+////        @Published var userName : String = "jminnich23"
+////        @Published var gamesWon : Int = 0
+////        @Published var displayCards : Bool = false
+////    
+////        
+////        @Published private var deck: [Card]
+////        init(deck: [Card]) {
+////            self.deck = deck
+////        }
+////        
+////        func runGame(){
+////            displayedBoardCards = []
+////            boardCards = []
+////            
+////            timer = 0
+////            canFlip = false
+////            pairsFound = 0
+////            
+////            getCards()
+////            shuffleBoardCards()
+////            
+////            createBoard()
+////        }
+////    
+////        func createBoard(){
+////            for i in stride(from: 0, to: boardCards.count, by: 1){
+////                withAnimation(.easeInOut(duration: 1.5).delay(1)) {
+////                    var card : Card = boardCards.removeFirst()
+////                    displayedBoardCards.append(card)
+////                }
+////            }
+////        }
+////    
+////        func getCards(){
+////            for i in 1...numPairs*2{
+//////                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 * Double(i)) {
+////                    self.addCard(showCard: false)
+//////                }
+////            }
+////
+////            canFlip = true
+////        }
+////    
+////        func addCard(showCard: Bool){
+////            var dealCard : Card = deck.removeFirst()
+////            dealCard.isShown = showCard
+////            boardCards.append(dealCard)
+////            boardCards.append(dealCard)
+////        }
+////        
+////        // HELPERS THAT SHOULD WORK //
+////        func cardImage(card: Card) -> String{
+////            if (!card.isShown){
+////                return ("back_of_blue")
+////            }
+////           return (card.suit == "joker" ? ("\(card.value)_\(card.suit)") :  "\(card.value)_of_\(card.suit)")
+////        }
+////    
+////        func shuffleBoardCards(){
+////            for i in stride(from: self.boardCards.count, to: 0, by: -1){
+////                let index = Int.random(in: 0 ..< i)
+////                self.boardCards.swapAt(index, i)
+////            }
+////        }
+////    
+////        func shuffle(){
+////            for i in stride(from: self.deck.count-5, to: 0, by: -1){
+////                let index = Int.random(in: 0 ..< i)
+////                self.deck.swapAt(index, i)
+////            }
+////        }
+////    
+////    
+////    //        func getCards() -> [Card] {
+////    //            let cards = deck.cards.shuffle()
+////    //            return Array(cards.prefix(numPairs))
+////    //        }
+////    //
+////    //        func getDoubledCards() -> [Card] {
+////    //            let cards = getCards()
+////    //            let doubledCards = cards + cards
+////    //            return doubledCards.shuffle()
+////    //        }
+////    
+////}
 //
 //struct MatchingPairsView : View {
 //    
-//    @ObservedObject var pairsModel = PairsGameModel()
+//   
 //    
 //    var body: some View{
 //        GeometryReader{ gp in

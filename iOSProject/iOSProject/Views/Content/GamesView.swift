@@ -18,9 +18,8 @@ struct GamesView : View {
             ScrollView{
                 VStack{
                     NavigationLink{
-                        // PairsView()
-                           // .environmentObject(deck)
-                            //tabBarHidden = true
+                        PairsView(deck: deck)
+                            .environmentObject(deck)
                     } label:{
                         
                         HStack {
