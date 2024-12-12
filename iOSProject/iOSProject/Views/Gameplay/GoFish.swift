@@ -26,6 +26,7 @@ class GoFishModel : ObservableObject
     @Published var giveEnabled = false;
     @Published var newGameButton = false;
     @Published var makeGoEnabled = false;
+    @Published var informAction = ""
     
     @Published var askNum = 0
    
@@ -48,10 +49,38 @@ class GoFishModel : ObservableObject
     func addToPlayerBook(cardValue: Int){
         //card index one before card value probably
         playerBooks[cardValue-2] +=  1
+        if(playerBooks[cardValue-2] == 4)
+        {
+            for i in 0..<playerCards.count
+            {
+                if(playerCards[i].numericValue==cardValue)
+                {
+                    playerCards.remove(at: i)
+                }
+            }
+        }
+    }
+    func reducePlayerBook(cardValue: Int)
+    {
+        playerBooks[cardValue-2] -= 1
+    }
+    func reduceBotBook(cardValue: Int)
+    {
+        botBooks[cardValue-2] -= 1
     }
     func addToBotBook(cardValue: Int){
         //card index one before card value probably
         botBooks[cardValue-2] +=  1
+        if(botBooks[cardValue-2] == 4)
+        {
+            for i in 0..<botCards.count
+            {
+                if(botCards[i].numericValue==cardValue)
+                {
+                    botCards[i].isShown = true
+                }
+            }
+        }
     }
     func dealPlayer(showCard: Bool){
         var dealCard : FishCard = fishDeck.removeFirst()
@@ -62,7 +91,36 @@ class GoFishModel : ObservableObject
             playerCards.append(dealCard)
             addToPlayerBook(cardValue: dealCard.numericValue)
         }
+        playerSort()
 
+    }
+    func playerSort()
+    {
+        for i in 1..<playerCards.count{
+            var k = playerCards[i];
+            var j = i - 1;
+            while (j >= 0 && playerCards[j].numericValue > k.numericValue)
+            {
+                playerCards[j + 1] = playerCards[j]
+                j = j - 1
+            }
+                     
+            playerCards[j + 1] = k;
+        }
+    }
+    func botSort()
+    {
+        for i in 1..<botCards.count{
+            var k = botCards[i];
+            var j = i - 1;
+            while (j >= 0 && botCards[j].numericValue > k.numericValue)
+            {
+                botCards[j + 1] = botCards[j]
+                j = j - 1
+            }
+                     
+            botCards[j + 1] = k;
+        }
     }
     func dealBot(showCard: Bool){
         var dealCard : FishCard = fishDeck.removeFirst()
@@ -72,6 +130,7 @@ class GoFishModel : ObservableObject
             botCards.append(dealCard)
             addToBotBook(cardValue: dealCard.numericValue)
         }
+        botSort()
 //
 //        if(calculatePlayerScore()==21)
 //        {
@@ -142,25 +201,29 @@ class GoFishModel : ObservableObject
     {
         var counter = 0
         for card in botCards{
-            
+            if(card.isShown == false)
+            {
             if(card.numericValue==askValue)
             {
                 if(botBooks[card.numericValue-2] < 4)
                 {
-                   
+                    
                     givePlayer(card: card)
+                    reduceBotBook(cardValue: card.numericValue)
                     botCards.remove(at: counter)
+                    
                     askEnabled = false
                     return "The opponent had a \(card.value) of \(card.suit)!!!"
                     
                 }
-              else
+                else
                 {
-                  fishEnabled = true
-                  askEnabled = false
-                  return "The opponent has a book of \(card.value)s already, Go Fish!!!"
+                    fishEnabled = true
+                    askEnabled = false
+                    return "The opponent has a book of \(card.value)s already, Go Fish!!!"
                 }
             }
+        }
             counter += 1
         }
         fishEnabled = true
@@ -183,6 +246,7 @@ class GoFishModel : ObservableObject
     
     func botAsk() -> String
     {
+        playerResponse()
         if(failedAsk.count>3)
         {
             failedAsk.removeFirst()
@@ -275,6 +339,7 @@ class GoFishModel : ObservableObject
         newGameButton = false
         shuffle()
         makeGoEnabled = false
+        informAction = "Tap a card to ask for another one with its value"
         
         for i in 0..<7
         {
@@ -298,6 +363,9 @@ struct GoFishView : View {
     @StateObject var GFM: GoFishModel
     
     @State var bgColor: Color = Color(red: 0.06, green: 0.37, blue: 0.06)
+    @State var oppWidth: CGFloat = 30
+    @State var oppHeight: CGFloat = 60
+    
     @State var cardWidth: CGFloat = 80
     @State var cardHeight: CGFloat = 120
   
@@ -343,16 +411,65 @@ struct GoFishView : View {
                             }
                             
                         }
+                        Text("Oppenent Hand")
+                            .foregroundColor(.white)
+                            .cornerRadius(20)
+                            .font(.system(size: 20))
+                            .padding()
+                        ScrollView(.horizontal)
+                        {
+                            
+                            HStack{
+                                ForEach(GFM.botCards){ card in
+                                    Image(GFM.cardImage(card: card))
+                                        .resizable()
+                                        .frame(width: oppWidth, height: oppHeight)
+                                }
+                            }
+                        }
+                        HStack{
+                            Text("Go Fish")
+                                .foregroundColor(.blue)
+                                .cornerRadius(20)
+                                .font(.system(size: 50))
+                                .padding()
+                            
+                           
+                        }
+                        Text("Your hand")
+                            .foregroundColor(.white)
+                            .cornerRadius(20)
+                            .font(.system(size: 20))
+                            .padding()
                         ScrollView(.horizontal)
                         {
                             HStack{
-                                ForEach(GFM.botCards){ card in
+                                ForEach(GFM.playerCards){ card in
                                     Image(GFM.cardImage(card: card))
                                         .resizable()
                                         .frame(width: cardWidth, height: cardHeight)
                                 }
                             }
                         }
+                        Text("Tell opponent Go Fish!!!")
+                            .offset(x:0,y:50)
+                            .foregroundColor(.orange)
+                            .font(.system(size: 20))
+                            .padding()
+                
+                        Spacer()
+                        Text(GFM.informAction).foregroundColor(.purple)
+                        Text("Your Score: \(GFM.calculatePlayerScore())")
+                            .foregroundColor(.white)
+                            .cornerRadius(20)
+                            .font(.system(size: 20))
+                            .padding()
+                        
+                        Text("Opponent Score: \(GFM.calculateBotScore())")
+                            .foregroundColor(.white)
+                            .cornerRadius(20)
+                            .font(.system(size: 20))
+                            .padding()
                     }
                     
                 }
