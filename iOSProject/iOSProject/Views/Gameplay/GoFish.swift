@@ -24,6 +24,7 @@ class GoFishModel : ObservableObject
     @Published var fishEnabled = false;
     @Published var askEnabled = false;
     @Published var giveEnabled = false;
+    @Published var continueButton = false;
 
     @Published var makeGoEnabled = false;
     @Published var informAction = ""
@@ -229,6 +230,7 @@ class GoFishModel : ObservableObject
                     botCards.remove(at: counter)
                     fishEnabled = false
                     askEnabled = false
+                    continueButton = true
                     informAction = "The opponent had a \(card.value) of \(card.suit)!!!"
                     
                 }
@@ -316,7 +318,7 @@ class GoFishModel : ObservableObject
         {
             informAction =  "Opponent asks: do you have an ace?"
         }
-        informAction = "Inform error"
+       
     }
     func playerResponse()
     {
@@ -357,7 +359,7 @@ class GoFishModel : ObservableObject
         shuffle()
         makeGoEnabled = false
         informAction = "Tap a card to ask for another one with its value"
-        
+        continueButton = false
         for i in 0..<7
         {
        
@@ -460,11 +462,18 @@ struct GoFishView : View {
                         HStack{
                             if(GFM.fishEnabled)
                             {
-                                Text("Go Fish")
-                                    .foregroundColor(.blue)
-                                    .cornerRadius(20)
-                                    .font(.system(size: 50))
-                                    .padding()
+                                Button{
+                                    GFM.dealPlayer(showCard: true)
+                                    GFM.fishEnabled = false
+                                    GFM.botAsk()
+                                }
+                                label: {
+                                    Text("Go Fish")
+                                        .foregroundColor(.blue)
+                                        .cornerRadius(20)
+                                        .font(.system(size: 50))
+                                        .padding()
+                                }
                             }
                             else{
                                 Text(" ")
@@ -491,7 +500,9 @@ struct GoFishView : View {
                                             {
                                                 GFM.playerAsk(askValue: card.numericValue)
                                                 GFM.askEnabled = false
+                                               
                                             }
+                                            
                                         }
                                         label:{
                                             Image(GFM.cardImage(card: card))
@@ -504,11 +515,18 @@ struct GoFishView : View {
                         }
                         if(GFM.makeGoEnabled)
                         {
-                            Text("Tell opponent Go Fish!!!")
-                                .offset(x:0,y:50)
-                                .foregroundColor(.orange)
-                                .font(.system(size: 20))
-                                .padding()
+                            Button{
+                                GFM.makeGoEnabled = false
+                                GFM.dealBot(showCard: false)
+                                GFM.askEnabled = true
+                            }
+                            label:{
+                                Text("Tell opponent Go Fish!!!")
+                                    .offset(x:0,y:50)
+                                    .foregroundColor(.orange)
+                                    .font(.system(size: 20))
+                                    .padding()
+                            }
                         }
                         else{
                             Text("   ")
@@ -516,6 +534,24 @@ struct GoFishView : View {
                 
                         Spacer()
                         Text(GFM.informAction).foregroundColor(.white)
+                        if(GFM.continueButton == true)
+                        {
+                            Button{
+                                GFM.botAsk()
+                                GFM.continueButton = false
+                             
+                                
+                            }
+                            label: {
+                                Text("Continue")
+                                    .offset(x:0,y:50)
+                                    .foregroundColor(.orange)
+                                    .font(.system(size: 20))
+                                    .padding()
+                            }
+                        }
+                        
+                        Spacer()
                         Text("Your Score: \(GFM.calculatePlayerScore())")
                             .foregroundColor(.white)
                             .cornerRadius(20)
