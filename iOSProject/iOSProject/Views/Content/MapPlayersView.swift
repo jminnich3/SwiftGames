@@ -76,8 +76,18 @@ struct MapPlayersView :  UIViewRepresentable {
                        var annotationView = MKAnnotationView()
          
                         if annotation.title == "jminnich23"{
-                            annotationView = MyAnnotationView(annotation: annotation, reuseIdentifier: nil, image_name: "blackjack")
+                            annotationView = MyAnnotationView(annotation: annotation, reuseIdentifier: nil, image_name: "player")
                        }
+            
+            if annotation.title == "lucas1234"{
+                annotationView = MyAnnotationView(annotation: annotation, reuseIdentifier: nil, image_name: "player")
+           }
+            
+            if annotation.title == "zhang5678"{
+                annotationView = MyAnnotationView(annotation: annotation, reuseIdentifier: nil, image_name: "player")
+           }
+            
+            
             //else if annotation.title == "Dunkin'"{
 //                            annotationView = MyAnnotationView(annotation: annotation, reuseIdentifier: nil, image_name: "star")
             //            }else if annotation.title == "Jin Sushi"{

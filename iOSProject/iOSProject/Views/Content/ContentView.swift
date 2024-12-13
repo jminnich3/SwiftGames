@@ -19,7 +19,7 @@ struct ContentView: View {
     
     
     @EnvironmentObject var LM : LocationModel
-    @State var needsOnboarding = true
+    @State var needsOnboarding = false
     //@AppStorage("onboarding") var needsOnboarding = true
     
     
@@ -53,12 +53,12 @@ struct ContentView: View {
                     }
                 }.tag(TABINDEX.rules)
                 
-                LeaderboardView().tabItem{
-                    VStack{
-                        Image(systemName: "medal")
-                        Text("Leaderboard")
-                    }
-                }.tag(TABINDEX.leaderboard)
+//                LeaderboardView().tabItem{
+//                    VStack{
+//                        Image(systemName: "medal")
+//                        Text("Leaderboard")
+//                    }
+//                }.tag(TABINDEX.leaderboard)
                 
                 MapPlayersView(dbService: dbService).tabItem{
                     VStack{

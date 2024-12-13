@@ -15,7 +15,7 @@ class PairsGameModel: ObservableObject {
     }
     
     @Published private var timer = 0
-    @Published private var numPairs = 6
+    @Published private var numPairs = 9
     //        @Published var sourceCards: [Card] = []
     @Published var boardCards: [Card] = []
     @Published var displayedBoardCards: [Card] = []
@@ -253,7 +253,7 @@ struct PairsView : View {
                                     Text("Matching Pairs \t\t\t\(PGM.pairsFound)")
                                         .bold()
                                         .font(.title)
-                                        .padding(.top, 20)
+                                        .padding(.top, 40)
                                     
                                     ScrollView{
                                         
@@ -277,25 +277,28 @@ struct PairsView : View {
                                             
                                         }
                                         HStack{
-                                            NavigationLink{
-                                                ContentView()
-                                            }label : {
-                                                ZStack{
-                                                    RoundedRectangle(cornerRadius: 14)
-                                                        .foregroundStyle(Color.white)
-                                                        .frame(width: 50, height: 40)
-                                                    Text("Quit")
-                                                        .bold()
-                                                        .foregroundStyle(.black)
-                                                }
-                                            }.padding(.horizontal, 10)
+//                                            NavigationLink{
+//                                                ContentView()
+//                                            }label : {
+//                                                ZStack{
+//                                                    RoundedRectangle(cornerRadius: 14)
+//                                                        .foregroundStyle(Color.white)
+//                                                        .frame(width: 50, height: 40)
+//                                                   
+//                                                        Text("Board Size")
+//                                                            .bold()
+//                                                            .foregroundStyle(.black)
+//                                                        //TextField(" ", text: $PGM.numPairs)
+//                                                    
+//                                                }
+//                                            }.padding(.horizontal, 10)
                                         }.padding(.horizontal)
                                             .padding(.top, 30)
                                         Spacer()
-                                        Text("Matching Pairs")
-                                            .foregroundColor(.black)
-                                            .cornerRadius(20)
-                                            .bold()
+//                                        Text("Matching Pairs")
+//                                            .foregroundColor(.black)
+//                                            .cornerRadius(20)
+//                                            .bold()
                                         Spacer()
                                         Spacer()
                                         Spacer()
@@ -318,15 +321,11 @@ struct PairsView : View {
                                 .onAppear(){self.deck.shuffle()
                                     PGM.runGame()} .padding()
                                     .padding()
-                                
                             }
-                            
                         }
-                        
                     }.ignoresSafeArea()
                 }.ignoresSafeArea()
             }
-            
         }
     }
 }

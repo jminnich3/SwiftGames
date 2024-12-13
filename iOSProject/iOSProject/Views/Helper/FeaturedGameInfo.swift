@@ -32,20 +32,6 @@ struct FeaturedGameInfo : View{
                     .padding(.leading, 15)
         
             
-                
-            HStack{
-                Text("Similar Games: ")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.custom("Avenir Heavy", size: 18))
-                    .padding(.leading, 15)
-                
-                ForEach(game.similarGames, id: \.self){game in
-                    Text("\(game)")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.custom("Avenir Heavy", size: 18))
-                        .padding(.leading, 15)
-                    }
-            }
             
            
         }
