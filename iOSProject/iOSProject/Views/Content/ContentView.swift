@@ -14,6 +14,7 @@ struct ContentView: View {
     @State var tabHashIndex : TABINDEX = .featured
     @EnvironmentObject var VM : DeckViewModel
     @EnvironmentObject var games : GameViewModel
+    @EnvironmentObject var FVM: FishViewModel
     @ObservedObject var dbService = DatabaseManager()
     
     
@@ -107,4 +108,5 @@ struct ContentView: View {
         .environmentObject(DeckViewModel())
         .environmentObject(GameViewModel())
         .environmentObject(LocationModel())
+        .environmentObject(FishViewModel())
 }
