@@ -15,11 +15,11 @@ class PairsGameModel: ObservableObject {
     }
     
     @Published private var timer = 0
-    @Published private var numPairs = 5
+    @Published private var numPairs = 6
     //        @Published var sourceCards: [Card] = []
     @Published var boardCards: [Card] = []
     @Published var displayedBoardCards: [Card] = []
-    @Published var canFlip : Bool = false
+    @Published var canFlip : Bool = true
     @Published var pairsFound : Int = 0
     @Published var userName : String = "jminnich23"
     @Published var gamesWon : Int = 0
@@ -35,13 +35,12 @@ class PairsGameModel: ObservableObject {
     func runGame(){
         displayedBoardCards = []
         boardCards = []
-        shuffle()
         timer = 0
         gameWon = false
         canFlip = false
         pairsFound = 0
         
-        
+        shuffle()
         getCards()
         shuffleBoardCards()
         createBoard()
@@ -51,36 +50,62 @@ class PairsGameModel: ObservableObject {
         boardCards.append(card)
     }
     
+    func cardsSame(card1: Card, card2: Card) -> Bool{
+        if(card1.suit == "check"){
+            return false
+        }
+        return card1.suit == card2.suit && card1.value == card2.value
+    }
     
     
     func cardTurned(index: Int){
-        print("first card index BEFOR \(firstCardIndex)")
-        print(firstCardSelected)
-        print("")
+        canFlip = false
         if(firstCardSelected){
             
-            print("displaying both cards first card: \(firstCardIndex)")
-            displayedBoardCards[firstCardIndex].isShown = true
-            displayedBoardCards[index].isShown = true
+            //displayedBoardCards[firstCardIndex].isShown = true
+            withAnimation(.easeInOut(duration: 0.5).delay(0.5)) {
+                displayedBoardCards[index].isShown = true
+            }
+            let card1 = displayedBoardCards[firstCardIndex]
+            let card2 = displayedBoardCards[index]
             
             if(index == firstCardIndex)
             {
-                print("SAME CARD")
+                print("SAME CARD FLIPPED")
                 displayedBoardCards[index].isShown = false
+                firstCardSelected = false
             }
-            
-            else if(displayedBoardCards[firstCardIndex].numericValue == displayedBoardCards[index].numericValue && displayedBoardCards[firstCardIndex].suit == displayedBoardCards[index].suit) && displayedBoardCards[index].suit != "stub"{
-                
-                pairsFound+=1
-                if(pairsFound == numPairs)
-                {
-                    gameWon = true
+            else if(cardsSame(card1: card1, card2: card2)){
+                print("FOUND PAIR")
+                Task{
+                    try? await Task.sleep(nanoseconds: 1_000_000_000)
+                    withAnimation(.easeInOut(duration: 0.5).delay(0.5)) {
+                        displayedBoardCards[index].suit = "check"
+                        displayedBoardCards[firstCardIndex].suit = "check"
+                    }
+                    pairsFound+=1
+                       if(pairsFound == numPairs)
+                       {
+                           gameWon = true
+                       }
                 }
+                
             }
-            // not found, reset
-            //            displayedBoardCards[index].isShown = false
-            //            displayedBoardCards[firstCardIndex].isShown = false
-            
+            else{ // different card
+                print("NOT A PAIR")
+                print("FIRST VAL: \(card1.value)")
+                print("SECOND CARD VAL: \(card2.value)")
+                Task {
+                    try? await Task.sleep(nanoseconds: 1_000_000_000)
+                    withAnimation(.easeInOut(duration: 0.5).delay(0.5)) {
+                        displayedBoardCards[index].isShown = false
+                        displayedBoardCards[firstCardIndex].isShown = false
+                    }
+
+                        firstCardIndex = -1
+                        firstCardSelected = false
+                    }
+            }
         }
         else{
             // set first card
@@ -91,9 +116,10 @@ class PairsGameModel: ObservableObject {
             firstCardIndex = index
             firstCardSelected = true
         }
-        print("First card selected after \(firstCardIndex)")
+        print(" 1st CARD INDEX\(firstCardIndex)")
         print(firstCardSelected)
         print("")
+        canFlip = true
     }
     
     
@@ -109,9 +135,8 @@ class PairsGameModel: ObservableObject {
     
     func getCards(){
         for i in 1...numPairs{
-            //                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5 * Double(i)) {
             self.addCard(showCard: false)
-            //                }
+           
         }
         
         canFlip = true
@@ -125,6 +150,9 @@ class PairsGameModel: ObservableObject {
     
     // HELPERS THAT SHOULD WORK //
     func cardImage(card: Card) -> String{
+        if(card.suit == "check"){
+            return ("check")
+        }
         if (!card.isShown){
             return ("back_of_blue")
         }
@@ -144,18 +172,6 @@ class PairsGameModel: ObservableObject {
             self.deck.swapAt(index, i)
         }
     }
-    
-    
-    //        func getCards() -> [Card] {
-    //            let cards = deck.cards.shuffle()
-    //            return Array(cards.prefix(numPairs))
-    //        }
-    //
-    //        func getDoubledCards() -> [Card] {
-    //            let cards = getCards()
-    //            let doubledCards = cards + cards
-    //            return doubledCards.shuffle()
-    //        }
     
 }
 
@@ -177,8 +193,39 @@ struct PairsView : View {
     //    @State var myCards: cardList
     var body: some View{
         // game side
+        
+        
         if(gameStarted){
             ZStack{    Color(bgColor) // color
+                
+                if(PGM.gameWon){
+                    VStack{
+                        Text("You Win!!")
+                            .foregroundColor(Utility.gold)
+                            .italic()
+                            .bold()
+                            .padding()
+                        Image("check")
+                            .resizable()
+                            .frame(width: 100, height: 100)
+                            .padding()
+                        
+                        Button{
+                            PGM.runGame()
+                        }label : {
+                            ZStack{
+                                //                        RoundedRectangle(cornerRadius: 14)
+                                //                            .foregroundStyle(Color.white)
+                                //                            .frame(width: 200, height: 50)
+                                Text("New Game")
+                                    .bold()
+                                    .foregroundColor(.white)
+                            }
+                        }.padding()
+                        
+                    }
+                }
+                
                 VStack{ HStack{
                     NavigationLink{
                         ContentView()
@@ -193,10 +240,7 @@ struct PairsView : View {
                         }
                     }.padding(.horizontal)
                     
-                    Text("Matching Pairs")
-                        .foregroundColor(.black)
-                        .cornerRadius(20)
-                        .bold()
+                    
                 }  // Title
                     
                     ZStack{
@@ -206,19 +250,21 @@ struct PairsView : View {
                             
                             GeometryReader{ gp in
                                 VStack(alignment: .leading){
-                                    Text("Matching Pairs")
+                                    Text("Matching Pairs \t\t\t\(PGM.pairsFound)")
                                         .bold()
                                         .font(.title)
+                                        .padding(.top, 20)
                                     
                                     ScrollView{
                                         
                                         LazyVGrid(columns: [GridItem(spacing: 10), GridItem(spacing: 10), GridItem(spacing: 10)],
-                                                  spacing: 20){ // space between rows
+                                                  spacing: 10){ // space between rows
                                             ForEach(PGM.displayedBoardCards.indices, id: \.self) { index in
                                                 let card = PGM.displayedBoardCards[index]
                                                 Button {
-                                                    
-                                                    PGM.cardTurned(index: index)
+                                                    if(PGM.canFlip){
+                                                        PGM.cardTurned(index: index)
+                                                    }
                                                     
                                                 } label: {
                                                     Image(PGM.cardImage(card: card))
@@ -244,6 +290,7 @@ struct PairsView : View {
                                                 }
                                             }.padding(.horizontal, 10)
                                         }.padding(.horizontal)
+                                            .padding(.top, 30)
                                         Spacer()
                                         Text("Matching Pairs")
                                             .foregroundColor(.black)
@@ -272,12 +319,12 @@ struct PairsView : View {
                                     PGM.runGame()} .padding()
                                     .padding()
                                 
-                            }.ignoresSafeArea()
+                            }
                             
                         }
                         
-                    }
-                }
+                    }.ignoresSafeArea()
+                }.ignoresSafeArea()
             }
             
         }
