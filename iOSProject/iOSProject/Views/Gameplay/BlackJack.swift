@@ -18,11 +18,8 @@ class BlackJackModel : ObservableObject{
     @Published  var playerCards: [Card] = []
     @Published  var dealerCards: [Card] = []
     
-    @Published var wager: Int = 130
+    @Published var wager: String = "10"
     @Published var userMoney: Int = 1000
-    
-//    @Published  var playerScore = 0
-//    @Published  var dealerScore = 0
     
     @Published var playerBust = false
     @Published var dealerBust = false
@@ -32,6 +29,7 @@ class BlackJackModel : ObservableObject{
     
     @Published var hitButtonEnabled: Bool = false
     @Published var standButtonEnabled: Bool = false
+    @Published var canMakeBet : Bool = false
     
     @Published var wonGame: Int = -2 // -1 push, 0 loss, 1 win
     
@@ -118,12 +116,14 @@ class BlackJackModel : ObservableObject{
         {
             hitButtonEnabled = false
             standButtonEnabled = false
+            stand()
         }
         
         if(calculatePlayerScore()>21)
         {
-            playerBust = true
+            dealerWins()
             hitButtonEnabled = false
+            standButtonEnabled = false
         }
     }
     
@@ -145,28 +145,7 @@ class BlackJackModel : ObservableObject{
     
     
     func stand(){
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1){
-//            self.showFirstDealerCard()
-//        }
-//        dealerCards[0].isShown = true
-//        
-//        
-//        while calculateDealerScore() < 17{
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                self.dealDealer(showCard: true)
-//            }
-//        }
-//        
-//        if calculateDealerScore() > 21{
-//            playerWins()
-//        }else if calculatePlayerScore() > calculateDealerScore(){
-//            playerWins()
-//        }else if calculatePlayerScore() < calculateDealerScore(){
-//            dealerWins()
-//        }else{
-//            push()
-//        }
-        
+
         dealerCards[0].isShown = true
         
         if(calculateDealerScore()==21)
@@ -221,6 +200,7 @@ class BlackJackModel : ObservableObject{
     }
     
     func runGame(){
+        canMakeBet = false
         playerCards = []
         dealerCards = []
         
@@ -242,24 +222,26 @@ class BlackJackModel : ObservableObject{
     
     // RESULTING GAME FUNCTIONS
     func dealerWins(){
-       userMoney -= wager
-        wonGame = 0
+        if let wagerInt = Int(wager){
+            userMoney -= wagerInt
+            wonGame = 0
+            canMakeBet = true
+        }
+       
     }
     func playerWins(){
-        userMoney += wager
-        wonGame = 1
+        if let wagerInt = Int(wager){
+            userMoney += wagerInt
+            wonGame = 1
+            canMakeBet = true
+        }
     }
     func push(){
         userMoney += 0
         wonGame = -1
+        canMakeBet = true
     }
 }
-
-
-
-
-
-
 
 
 struct BlackJackView : View {
@@ -269,7 +251,10 @@ struct BlackJackView : View {
     @State var cardHeight: CGFloat = 120
     @State var cardsPerRow: Int = 4
    
+    
+    
     @EnvironmentObject var deck : DeckViewModel
+    
     
     @StateObject var BJM: BlackJackModel
     
@@ -283,14 +268,12 @@ struct BlackJackView : View {
             Color(bgColor)
             VStack{
                 Text("Black Jack")
-                    .foregroundColor(.white)
+                    .foregroundColor(.yellow)
                     .cornerRadius(20)
-                    .font(.system(size: 30))
+                    .font(.system(size: 50))
                     .padding(.top, 50)
-                    .padding()
-                
+            
                 VStack{
-                    
                     HStack{
                         if(BJM.wonGame != -2){
                             if(BJM.wonGame == 1){
@@ -318,9 +301,9 @@ struct BlackJackView : View {
                                 BJM.runGame()
                             }label : {
                                 ZStack{
-                                    //                        RoundedRectangle(cornerRadius: 14)
-                                    //                            .foregroundStyle(Color.white)
-                                    //                            .frame(width: 200, height: 50)
+                                        RoundedRectangle(cornerRadius: 10)
+                                        .foregroundStyle(Utility.mintGreen)
+                                        .frame(width: 120, height: 30)
                                     Text("New Game")
                                         .bold()
                                         .foregroundColor(.white)
@@ -365,13 +348,7 @@ struct BlackJackView : View {
                             }
                         }
                     }
-//                    HStack{
-//                        ForEach(BJM.dealerCards){ card in
-//                            Image(BJM.cardImage(card: card))
-//                                .resizable()
-//                                .frame(width: cardWidth, height: cardHeight)
-//                        }
-//                    }
+
                     Text("\(BJM.calculateDealerScore())")
                         .foregroundColor(.white)
                         .bold()
@@ -424,31 +401,11 @@ struct BlackJackView : View {
                         if(BJM.hitButtonEnabled){
                             BJM.dealPlayer(showCard: true)
                         }
-//                        if(BJM.calculatePlayerScore() < 21){
-//                            
-//                            BJM.dealPlayer(showCard: true)
-//                            
-//                            if(BJM.calculatePlayerScore() > 21)
-//                            {
-//                                BJM.stand()
-//                            }
-//                            else if(BJM.calculatePlayerScore() == 21){
-//                                BJM.playerWins()
-//                            }
-//                        }
-                        //                    else if(BJM.calculatePlayerScore() == 21){
-                        //                        BJM.playerWins()
-                        //                    }
-                        //                    else if(BJM.calculatePlayerScore() > 21)
-                        //                    {
-                        //                        BJM.stand()
-                        //                    }
-                        
                     }label : {
                         ZStack{
-                            //                        RoundedRectangle(cornerRadius: 14)
-                            //                            .foregroundStyle(Color.white)
-                            //                            .frame(width: 200, height: 50)
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Utility.mintGreen)
+                            .frame(width: 75, height: 30)
                             Text("HIT")
                                 .bold()
                                 .foregroundColor(.white)
@@ -464,9 +421,9 @@ struct BlackJackView : View {
                         }
                     }label : {
                         ZStack{
-                            //                        RoundedRectangle(cornerRadius: 14)
-                            //                            .foregroundStyle(Color.white)
-                            //                            .frame(width: 200, height: 50)
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Utility.mintGreen)
+                            .frame(width: 90, height: 30)
                             Text("STAND")
                                 .bold()
                                 .foregroundColor(.white)
@@ -474,37 +431,42 @@ struct BlackJackView : View {
                     }
                         
                 }
-                
-                HStack{
+                VStack{
+                    Text("Wager\t\t\t\t\tBank").padding(.trailing, 20)
+                        .foregroundColor(.white)
                     
-                    Text("Wager: $\(BJM.wager)")
-                        .foregroundColor(.white)
-                    Text("Bank: $\(BJM.calculateUserMoney())")
-                        .foregroundColor(.white)
+                    HStack{
+                        VStack{
+                            if(!BJM.canMakeBet){
+                                Text("$\(BJM.wager)                                   ")
+                                    .foregroundColor(.white)
+                            }
+                            else{
+                                TextField(" ", text: $BJM.wager)
+                                    .foregroundColor(.white)
+                                    .bold()
+                            }
+                            
+                        }
+                        
+                        Text(" $\(BJM.calculateUserMoney())")
+                            .bold()
+                            .foregroundColor(.white)
+                        
+                        
+                    }.padding(.top, 0)
+                        .frame(width: 200)
                 }.padding(.top, 25)
                 
-                Text("Leaderboard")
-                    .foregroundColor(.white)
-                    .padding(.top, 25)
                 Spacer()
+                    
                 
-                
-//                TextField("Number of Pairs", : Binding(
-//                    get: {
-//                        numberOfPairs ?? 5// Provide a default value if nil
-//                    },
-//                    set: {
-//                        numberOfPairs = $0 // Update the optional email
-//                    }
-//                ))
-            }
-            .padding()
+            }.ignoresSafeArea()
             
         }.onAppear(){
             deck.shuffle()
             BJM.runGame()
         }.ignoresSafeArea()
-        
         
     }
 }
@@ -514,4 +476,5 @@ struct BlackJackView : View {
     @Previewable var deck : DeckViewModel = DeckViewModel()
     BlackJackView(deck: deck)
         .environmentObject(DeckViewModel())
+        .onAppear { deck.shuffle() }
 }
